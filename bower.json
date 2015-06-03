@@ -4,6 +4,9 @@
   "authors": [
     "Pinecone, LLC"
   ],
+  "main": [
+    "dist/mm-foundation-tpls-0.6.0.js"
+  ],
   "license": "MIT",
   "private": true,
   "ignore": [
