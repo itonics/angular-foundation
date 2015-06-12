@@ -78,7 +78,7 @@ angular.module('mm.foundation.accordion', [])
       };
     },
     link: function(scope, element, attrs, accordionCtrl) {
-      // Customized:: The jQuery toggleSlide animation // Replaced the default inline css display block/none
+      // Customized for LEB :: The jQuery toggleSlide animation // Replaced the default inline css display block/none
       element.find('a').click(function(){
         jQuery(this).next().slideToggle(function(){
             jQuery(this).css('overflow','');
@@ -3400,7 +3400,8 @@ angular.module("template/accordion/accordion-group.html", []).run(["$templateCac
   $templateCache.put("template/accordion/accordion-group.html",
     "<dd>\n" +
     "  <a ng-click=\"isOpen = !isOpen\" ng-class=\"{ active: isOpen }\"  accordion-transclude=\"heading\">{{heading}}</a>\n" +
-    "  <div class=\"content\" style=\"display:block\" ng-transclude></div>\n" +
+    "    <!-- Customized for LEB :: replaced <div class=\"content\" ng-style=\"isOpen ? {display: 'block'} : {}\" ng-transclude></div> with -->\n" +
+    "    <div class=\"content\" style=\"display:block\" ng-transclude></div>\n" +
     "</dd>\n" +
     "");
 }]);

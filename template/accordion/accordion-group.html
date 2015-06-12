@@ -1,4 +1,5 @@
 <dd>
   <a ng-click="isOpen = !isOpen" ng-class="{ active: isOpen }"  accordion-transclude="heading">{{heading}}</a>
-  <div class="content" style="display:block" ng-transclude></div>
+    <!-- Customized for LEB :: replaced <div class="content" ng-style="isOpen ? {display: 'block'} : {}" ng-transclude></div> with -->
+    <div class="content" style="display:block" ng-transclude></div>
 </dd>

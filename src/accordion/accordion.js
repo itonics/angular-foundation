@@ -68,7 +68,7 @@ angular.module('mm.foundation.accordion', [])
       };
     },
     link: function(scope, element, attrs, accordionCtrl) {
-      // Customized:: The jQuery toggleSlide animation // Replaced the default inline css display block/none
+      // Customized for LEB :: The jQuery toggleSlide animation // Replaced the default inline css display block/none
       element.find('a').click(function(){
         jQuery(this).next().slideToggle(function(){
             jQuery(this).css('overflow','');
