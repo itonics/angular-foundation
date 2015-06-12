@@ -68,6 +68,12 @@ angular.module('mm.foundation.accordion', [])
       };
     },
     link: function(scope, element, attrs, accordionCtrl) {
+      // Customized:: The jQuery toggleSlide animation // Replaced the default inline css display block/none
+      element.find('a').click(function(){
+        jQuery(this).next().slideToggle(function(){
+            jQuery(this).css('overflow','');
+        });
+      });
       var getIsOpen, setIsOpen;
 
       accordionCtrl.addGroup(scope);
@@ -77,6 +83,12 @@ angular.module('mm.foundation.accordion', [])
       if ( attrs.isOpen ) {
         getIsOpen = $parse(attrs.isOpen);
         setIsOpen = getIsOpen.assign;
+        // Customized:: The closing(initial) needs to be done manually, since we are using jQuery toggleSlide animation
+        if(!getIsOpen()){
+          element.find('.content').hide();
+        }else{
+          element.find('.content').show();
+        }
 
         scope.$parent.$watch(getIsOpen, function(value) {
           scope.isOpen = !!value;
