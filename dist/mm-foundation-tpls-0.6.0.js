@@ -2,7 +2,7 @@
  * angular-mm-foundation
  * http://pineconellc.github.io/angular-foundation/
 
- * Version: 0.6.0 - 2015-06-12
+ * Version: 0.6.0 - 2015-06-30
  * License: MIT
  * (c) Pinecone, LLC
  */
@@ -79,10 +79,29 @@ angular.module('mm.foundation.accordion', [])
     },
     link: function(scope, element, attrs, accordionCtrl) {
       // Customized for LEB :: The jQuery toggleSlide animation // Replaced the default inline css display block/none
-      element.find('a').click(function(){
-        jQuery(this).next().slideToggle(function(){
+      var accordContent = element.find('.content');
+      var accordOuterContent = element.find('.outer-content');
+      var accordAnchor = element.find('a:first');
+      var accordSlideAnimDuration = 600;
+      var accordSlideAnimEasing = "easeInOutQuint";
+      accordAnchor.click(function(){
+        if(accordAnchor.hasClass('active')){
+          accordOuterContent.css('overflow','hidden');
+          accordContent.animate({'margin-top':-accordContent.outerHeight()}, accordSlideAnimDuration, accordSlideAnimEasing, function(){
+            accordOuterContent.hide();
+            accordOuterContent.css('overflow','');
+          });
+        }else{
+          accordOuterContent.show();
+          accordContent.css({'margin-top':-accordContent.outerHeight()});
+          accordOuterContent.css('overflow','hidden');
+          accordContent.animate({'margin-top':0}, accordSlideAnimDuration, accordSlideAnimEasing, function(){
+            accordOuterContent.css('overflow','');
+          });
+        }
+        /*accordContent.slideToggle(function(){
             jQuery(this).css('overflow','');
-        });
+        });*/
       });
       var getIsOpen, setIsOpen;
 
@@ -95,9 +114,9 @@ angular.module('mm.foundation.accordion', [])
         setIsOpen = getIsOpen.assign;
         // Customized:: The closing(initial) needs to be done manually, since we are using jQuery toggleSlide animation
         if(!getIsOpen()){
-          element.find('.content').hide();
+          accordOuterContent .hide();
         }else{
-          element.find('.content').show();
+          accordOuterContent .show();
         }
 
         scope.$parent.$watch(getIsOpen, function(value) {
@@ -3399,9 +3418,11 @@ angular.module('mm.foundation.typeahead', ['mm.foundation.position', 'mm.foundat
 angular.module("template/accordion/accordion-group.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("template/accordion/accordion-group.html",
     "<dd>\n" +
-    "  <a ng-click=\"isOpen = !isOpen\" ng-class=\"{ active: isOpen }\"  accordion-transclude=\"heading\">{{heading}}</a>\n" +
+    "    <a ng-click=\"isOpen = !isOpen\" ng-class=\"{ active: isOpen }\"  accordion-transclude=\"heading\">{{heading}}</a>\n" +
     "    <!-- Customized for LEB :: replaced <div class=\"content\" ng-style=\"isOpen ? {display: 'block'} : {}\" ng-transclude></div> with -->\n" +
-    "    <div class=\"content\" style=\"display:block\" ng-transclude></div>\n" +
+    "    <div class=\"outer-content\">\n" +
+    "        <div class=\"content\" style=\"display:block\" ng-transclude></div>\n" +
+    "    </div>\n" +
     "</dd>\n" +
     "");
 }]);
