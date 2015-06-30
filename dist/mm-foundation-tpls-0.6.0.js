@@ -114,9 +114,9 @@ angular.module('mm.foundation.accordion', [])
         setIsOpen = getIsOpen.assign;
         // Customized:: The closing(initial) needs to be done manually, since we are using jQuery toggleSlide animation
         if(!getIsOpen()){
-          accordOuterContent .hide();
+          accordOuterContent.hide();
         }else{
-          accordOuterContent .show();
+          accordOuterContent.show();
         }
 
         scope.$parent.$watch(getIsOpen, function(value) {
