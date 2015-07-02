@@ -72,12 +72,21 @@ angular.module('mm.foundation.accordion', [])
       var accordContent = element.find('.content');
       var accordOuterContent = element.find('.outer-content');
       var accordAnchor = element.find('a:first');
+      var accordContH = accordContent.outerHeight();
+      var accordSlideAnimEasing = "easeInOutCubic";
       var accordSlideAnimDuration = 600;
-      var accordSlideAnimEasing = "easeInOutQuint";
+
       accordAnchor.click(function(){
         if(accordAnchor.hasClass('active')){
+          accordContH = accordContent.outerHeight();
+          accordSlideAnimDuration = (accordContH > 300)? 650 : accordSlideAnimDuration;
+          accordSlideAnimDuration = (accordContH > 500)? 700 : accordSlideAnimDuration;
+          accordSlideAnimDuration = (accordContH > 700)? 800 : accordSlideAnimDuration;
+          accordSlideAnimDuration = (accordContH > 1000)? 1000 : accordSlideAnimDuration;
+          accordSlideAnimDuration = (accordContH > 1500)? 1400 : accordSlideAnimDuration;
+
           accordOuterContent.css('overflow','hidden');
-          accordContent.animate({'margin-top':-accordContent.outerHeight()}, accordSlideAnimDuration, accordSlideAnimEasing, function(){
+          accordContent.stop(true, false).animate({'margin-top':-accordContH}, accordSlideAnimDuration, accordSlideAnimEasing, function(){
             accordOuterContent.hide();
             accordOuterContent.css('overflow','');
           });
@@ -85,7 +94,7 @@ angular.module('mm.foundation.accordion', [])
           accordOuterContent.show();
           accordContent.css({'margin-top':-accordContent.outerHeight()});
           accordOuterContent.css('overflow','hidden');
-          accordContent.animate({'margin-top':0}, accordSlideAnimDuration, accordSlideAnimEasing, function(){
+          accordContent.stop(true, false).animate({'margin-top':0}, accordSlideAnimDuration, accordSlideAnimEasing, function(){
             accordOuterContent.css('overflow','');
           });
         }
