@@ -153,6 +153,20 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
                     left: position.left - ttWidth - 10
                   };
                   break;
+                // Customized for LEB : added two new tooltip placement positions
+                case 'top_center':
+                  ttPosition = {
+                    top: position.top - ttHeight - 10,
+                    left: position.left + position.width/2 - ttWidth/2
+                  };
+                  break;
+                case 'bottom_center':
+                  ttPosition = {
+                    top: position.top + position.height + 10,
+                    left: position.left + position.width/2 - ttWidth/2
+                  };
+                  break;
+                // LEB
                 default:
                   ttPosition = {
                     top: position.top - ttHeight - 10,
@@ -247,14 +261,17 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
               //if tooltip is going to be shown after delay, we must cancel this
               $timeout.cancel( popupTimeout );
 
-              // And now we remove it from the DOM. However, if we have animation, we 
+              // Customized for LEB : added following
+              removeTooltip();
+
+              // And now we remove it from the DOM. However, if we have animation, we
               // need to wait for it to expire beforehand.
               // FIXME: this is a placeholder for a port of the transitions library.
-              if ( scope.tt_animation ) {
+              /*if ( scope.tt_animation ) {
                 transitionTimeout = $timeout(removeTooltip, 500);
               } else {
                 removeTooltip();
-              }
+              }*/
             }
 
             function createTooltip() {
