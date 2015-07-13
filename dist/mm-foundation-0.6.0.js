@@ -2,7 +2,7 @@
  * angular-mm-foundation
  * http://pineconellc.github.io/angular-foundation/
 
- * Version: 0.6.0 - 2015-07-10
+ * Version: 0.6.0 - 2015-07-13
  * License: MIT
  * (c) Pinecone, LLC
  */
@@ -1925,6 +1925,16 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
               }
             }
 
+            // Customized for LEB :: added an event checker function
+            function isValidEvent(evt){
+              for(var key in triggerMap) {
+                if(evt === triggerMap[key] || evt === key){
+                  return true;
+                }
+              }
+              return false;
+            }
+
             /**
              * Observe the relevant attributes.
              */
@@ -1951,6 +1961,13 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
             attrs.$observe( prefix+'PopupDelay', function ( val ) {
               var delay = parseInt( val, 10 );
               scope.tt_popupDelay = ! isNaN(delay) ? delay : options.popupDelay;
+            });
+
+            // Customized for LEB :: hide tooltip on certain event triggered for e.g. click
+            attrs.$observe( prefix+'Opthide', function (val){
+              if(val && isValidEvent(val)){
+                element.bind( val, hideTooltipBind );
+              }
             });
 
             var unregisterTriggers = function() {
