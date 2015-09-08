@@ -1123,7 +1123,10 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
       });
 
       $modalStack.open = function (modalInstance, modal) {
-
+            // Added for Lebowski.. Closes other modals if this option is set.
+          if(modal.closeOthers){
+              $modalStack.dismissAll("closeOthers");
+          }
         openedWindows.add(modalInstance, {
           deferred: modal.deferred,
           modalScope: modal.scope,
@@ -1285,6 +1288,7 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
                 content: tplAndVars[0],
                 backdrop: modalOptions.backdrop,
                 keyboard: modalOptions.keyboard,
+                closeOthers: modalOptions.closeOthers,
                 windowClass: modalOptions.windowClass
               });
 
