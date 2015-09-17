@@ -6,8 +6,8 @@
  * License: MIT
  * (c) Pinecone, LLC
  */
-angular.module("mm.foundation", ["mm.foundation.tpls", "mm.foundation.accordion","mm.foundation.alert","mm.foundation.bindHtml","mm.foundation.buttons","mm.foundation.position","mm.foundation.mediaQueries","mm.foundation.dropdownToggle","mm.foundation.interchange","mm.foundation.transition","mm.foundation.modal","mm.foundation.offcanvas","mm.foundation.pagination","mm.foundation.tooltip","mm.foundation.popover","mm.foundation.progressbar","mm.foundation.rating","mm.foundation.tabs","mm.foundation.topbar","mm.foundation.tour","mm.foundation.typeahead"]);
-angular.module("mm.foundation.tpls", ["template/accordion/accordion-group.html","template/accordion/accordion.html","template/alert/alert.html","template/modal/backdrop.html","template/modal/window.html","template/pagination/pager.html","template/pagination/pagination.html","template/tooltip/tooltip-html-unsafe-popup.html","template/tooltip/tooltip-popup.html","template/popover/popover.html","template/progressbar/bar.html","template/progressbar/progress.html","template/progressbar/progressbar.html","template/rating/rating.html","template/tabs/tab.html","template/tabs/tabset.html","template/topbar/has-dropdown.html","template/topbar/toggle-top-bar.html","template/topbar/top-bar-dropdown.html","template/topbar/top-bar-section.html","template/topbar/top-bar.html","template/tour/tour.html","template/typeahead/typeahead-match.html","template/typeahead/typeahead-popup.html"]);
+angular.module("mm.foundation", ["mm.foundation.tpls", "mm.foundation.accordion", "mm.foundation.alert", "mm.foundation.bindHtml", "mm.foundation.buttons", "mm.foundation.position", "mm.foundation.mediaQueries", "mm.foundation.dropdownToggle", "mm.foundation.interchange", "mm.foundation.transition", "mm.foundation.modal", "mm.foundation.offcanvas", "mm.foundation.pagination", "mm.foundation.tooltip", "mm.foundation.popover", "mm.foundation.progressbar", "mm.foundation.rating", "mm.foundation.tabs", "mm.foundation.topbar", "mm.foundation.tour", "mm.foundation.typeahead"]);
+angular.module("mm.foundation.tpls", ["template/accordion/accordion-group.html", "template/accordion/accordion.html", "template/alert/alert.html", "template/modal/backdrop.html", "template/modal/window.html", "template/pagination/pager.html", "template/pagination/pagination.html", "template/tooltip/tooltip-html-unsafe-popup.html", "template/tooltip/tooltip-popup.html", "template/popover/popover.html", "template/progressbar/bar.html", "template/progressbar/progress.html", "template/progressbar/progressbar.html", "template/rating/rating.html", "template/tabs/tab.html", "template/tabs/tabset.html", "template/topbar/has-dropdown.html", "template/topbar/toggle-top-bar.html", "template/topbar/top-bar-dropdown.html", "template/topbar/top-bar-section.html", "template/topbar/top-bar.html", "template/tour/tour.html", "template/typeahead/typeahead-match.html", "template/typeahead/typeahead-popup.html"]);
 angular.module('mm.foundation.accordion', [])
 
     .constant('accordionConfig', {
@@ -20,11 +20,11 @@ angular.module('mm.foundation.accordion', [])
         this.groups = [];
 
         // Ensure that all the groups in this accordion are closed, unless close-others explicitly says not to
-        this.closeOthers = function(openGroup) {
+        this.closeOthers = function (openGroup) {
             var closeOthers = angular.isDefined($attrs.closeOthers) ? $scope.$eval($attrs.closeOthers) : accordionConfig.closeOthers;
-            if ( closeOthers ) {
+            if (closeOthers) {
                 angular.forEach(this.groups, function (group) {
-                    if ( group !== openGroup ) {
+                    if (group !== openGroup) {
                         group.isOpen = false;
                     }
                 });
@@ -32,7 +32,7 @@ angular.module('mm.foundation.accordion', [])
         };
 
         // This is called from the accordion-group directive to add itself to the accordion
-        this.addGroup = function(groupScope) {
+        this.addGroup = function (groupScope) {
             var that = this;
             this.groups.push(groupScope);
 
@@ -42,9 +42,9 @@ angular.module('mm.foundation.accordion', [])
         };
 
         // This is called from the accordion-group directive when to remove itself
-        this.removeGroup = function(group) {
+        this.removeGroup = function (group) {
             var index = this.groups.indexOf(group);
-            if ( index !== -1 ) {
+            if (index !== -1) {
                 this.groups.splice(index, 1);
             }
         };
@@ -55,8 +55,8 @@ angular.module('mm.foundation.accordion', [])
 // and adds an accordion CSS class to itself element.
     .directive('accordion', function () {
         return {
-            restrict:'EA',
-            controller:'AccordionController',
+            restrict: 'EA',
+            controller: 'AccordionController',
             transclude: true,
             replace: false,
             templateUrl: 'template/accordion/accordion.html'
@@ -64,20 +64,20 @@ angular.module('mm.foundation.accordion', [])
     })
 
 // The accordion-group directive indicates a block of html that will expand and collapse in an accordion
-    .directive('accordionGroup', ['$parse', function($parse) {
+    .directive('accordionGroup', ['$parse', function ($parse) {
         return {
-            require:'^accordion',         // We need this directive to be inside an accordion
-            restrict:'EA',
-            transclude:true,              // It transcludes the contents of the directive into the template
+            require: '^accordion',         // We need this directive to be inside an accordion
+            restrict: 'EA',
+            transclude: true,              // It transcludes the contents of the directive into the template
             replace: true,                // The element containing the directive will be replaced with the template
-            templateUrl:'template/accordion/accordion-group.html',
-            scope:{ heading:'@' },        // Create an isolated scope and interpolate the heading attribute onto this scope
-            controller: function() {
-                this.setHeading = function(element) {
+            templateUrl: 'template/accordion/accordion-group.html',
+            scope: {heading: '@'},        // Create an isolated scope and interpolate the heading attribute onto this scope
+            controller: function () {
+                this.setHeading = function (element) {
                     this.heading = element;
                 };
             },
-            link: function(scope, element, attrs, accordionCtrl) {
+            link: function (scope, element, attrs, accordionCtrl) {
                 // Customized for LEB :: The jQuery toggleSlide animation // Replaced the default inline css display block/none
                 var accordContent = element.find('.content');
                 var accordOuterContent = element.find('.outer-content');
@@ -86,26 +86,26 @@ angular.module('mm.foundation.accordion', [])
                 var accordSlideAnimEasing = "easeInOutCubic";
                 var accordSlideAnimDuration = 600;
 
-                accordAnchor.click(function(){
-                    if(accordAnchor.hasClass('active')){
+                accordAnchor.click(function () {
+                    if (accordAnchor.hasClass('active')) {
                         accordContH = accordContent.outerHeight();
-                        accordSlideAnimDuration = (accordContH > 300)? 650 : accordSlideAnimDuration;
-                        accordSlideAnimDuration = (accordContH > 500)? 700 : accordSlideAnimDuration;
-                        accordSlideAnimDuration = (accordContH > 700)? 800 : accordSlideAnimDuration;
-                        accordSlideAnimDuration = (accordContH > 1000)? 1000 : accordSlideAnimDuration;
-                        accordSlideAnimDuration = (accordContH > 1500)? 1400 : accordSlideAnimDuration;
+                        accordSlideAnimDuration = (accordContH > 300) ? 650 : accordSlideAnimDuration;
+                        accordSlideAnimDuration = (accordContH > 500) ? 700 : accordSlideAnimDuration;
+                        accordSlideAnimDuration = (accordContH > 700) ? 800 : accordSlideAnimDuration;
+                        accordSlideAnimDuration = (accordContH > 1000) ? 1000 : accordSlideAnimDuration;
+                        accordSlideAnimDuration = (accordContH > 1500) ? 1400 : accordSlideAnimDuration;
 
-                        accordOuterContent.css('overflow','hidden');
-                        accordContent.stop(true, false).animate({'margin-top':-accordContH}, accordSlideAnimDuration, accordSlideAnimEasing, function(){
+                        accordOuterContent.css('overflow', 'hidden');
+                        accordContent.stop(true, false).animate({'margin-top': -accordContH}, accordSlideAnimDuration, accordSlideAnimEasing, function () {
                             accordOuterContent.hide();
-                            accordOuterContent.css('overflow','');
+                            accordOuterContent.css('overflow', '');
                         });
-                    }else{
+                    } else {
                         accordOuterContent.show();
-                        accordContent.css({'margin-top':-accordContent.outerHeight()});
-                        accordOuterContent.css('overflow','hidden');
-                        accordContent.stop(true, false).animate({'margin-top':0}, accordSlideAnimDuration, accordSlideAnimEasing, function(){
-                            accordOuterContent.css('overflow','');
+                        accordContent.css({'margin-top': -accordContent.outerHeight()});
+                        accordOuterContent.css('overflow', 'hidden');
+                        accordContent.stop(true, false).animate({'margin-top': 0}, accordSlideAnimDuration, accordSlideAnimEasing, function () {
+                            accordOuterContent.css('overflow', '');
                         });
                     }
                     /*accordContent.slideToggle(function(){
@@ -118,26 +118,26 @@ angular.module('mm.foundation.accordion', [])
 
                 scope.isOpen = false;
 
-                if ( attrs.isOpen ) {
+                if (attrs.isOpen) {
                     getIsOpen = $parse(attrs.isOpen);
                     setIsOpen = getIsOpen.assign;
                     // Customized:: The closing(initial) needs to be done manually, since we are using jQuery toggleSlide animation
-                    if(!getIsOpen()){
+                    if (!getIsOpen()) {
                         accordOuterContent.hide();
-                    }else{
+                    } else {
                         accordOuterContent.show();
                     }
 
-                    scope.$parent.$watch(getIsOpen, function(value) {
+                    scope.$parent.$watch(getIsOpen, function (value) {
                         scope.isOpen = !!value;
                     });
                 }
 
-                scope.$watch('isOpen', function(value) {
-                    if ( value ) {
+                scope.$watch('isOpen', function (value) {
+                    if (value) {
                         accordionCtrl.closeOthers(scope);
                     }
-                    if ( setIsOpen ) {
+                    if (setIsOpen) {
                         setIsOpen(scope.$parent, value);
                     }
                 });
@@ -149,19 +149,20 @@ angular.module('mm.foundation.accordion', [])
 // <accordion-group>
 //   <accordion-heading>Heading containing HTML - <img src="..."></accordion-heading>
 // </accordion-group>
-    .directive('accordionHeading', function() {
+    .directive('accordionHeading', function () {
         return {
             restrict: 'EA',
             transclude: true,   // Grab the contents to be used as the heading
             template: '',       // In effect remove this element!
             replace: true,
             require: '^accordionGroup',
-            compile: function(element, attr, transclude) {
+            compile: function (element, attr, transclude) {
                 return function link(scope, element, attr, accordionGroupCtrl) {
                     // Pass the heading to the accordion-group controller
                     // so that it can be transcluded into the right place in the template
                     // [The second parameter to transclude causes the elements to be cloned so that they work in ng-repeat]
-                    accordionGroupCtrl.setHeading(transclude(scope, function() {}));
+                    accordionGroupCtrl.setHeading(transclude(scope, function () {
+                    }));
                 };
             }
         };
@@ -173,12 +174,14 @@ angular.module('mm.foundation.accordion', [])
 //   <div class="accordion-heading" ><a ... accordion-transclude="heading">...</a></div>
 //   ...
 // </div>
-    .directive('accordionTransclude', function() {
+    .directive('accordionTransclude', function () {
         return {
             require: '^accordionGroup',
-            link: function(scope, element, attr, controller) {
-                scope.$watch(function() { return controller[attr.accordionTransclude]; }, function(heading) {
-                    if ( heading ) {
+            link: function (scope, element, attr, controller) {
+                scope.$watch(function () {
+                    return controller[attr.accordionTransclude];
+                }, function (heading) {
+                    if (heading) {
                         element.html('');
                         element.append(heading);
                     }
@@ -195,11 +198,11 @@ angular.module("mm.foundation.alert", [])
 
     .directive('alert', function () {
         return {
-            restrict:'EA',
-            controller:'AlertController',
-            templateUrl:'template/alert/alert.html',
-            transclude:true,
-            replace:true,
+            restrict: 'EA',
+            controller: 'AlertController',
+            templateUrl: 'template/alert/alert.html',
+            transclude: true,
+            replace: true,
             scope: {
                 type: '=',
                 close: '&'
@@ -225,7 +228,7 @@ angular.module('mm.foundation.buttons', [])
         toggleEvent: 'click'
     })
 
-    .controller('ButtonsController', ['buttonConfig', function(buttonConfig) {
+    .controller('ButtonsController', ['buttonConfig', function (buttonConfig) {
         this.activeClass = buttonConfig.activeClass;
         this.toggleEvent = buttonConfig.toggleEvent;
     }])
@@ -326,7 +329,7 @@ angular.module('mm.foundation.position', [])
         var parentOffsetEl = function (element) {
             var docDomEl = $document[0];
             var offsetParent = element.offsetParent || docDomEl;
-            while (offsetParent && offsetParent !== docDomEl && isStaticPositioned(offsetParent) ) {
+            while (offsetParent && offsetParent !== docDomEl && isStaticPositioned(offsetParent)) {
                 offsetParent = offsetParent.offsetParent;
             }
             return offsetParent || docDomEl;
@@ -339,7 +342,7 @@ angular.module('mm.foundation.position', [])
              */
             position: function (element) {
                 var elBCR = this.offset(element);
-                var offsetParentBCR = { top: 0, left: 0 };
+                var offsetParentBCR = {top: 0, left: 0};
                 var offsetParentEl = parentOffsetEl(element[0]);
                 if (offsetParentEl != $document[0]) {
                     offsetParentBCR = this.offset(angular.element(offsetParentEl));
@@ -366,16 +369,16 @@ angular.module('mm.foundation.position', [])
                     width: boundingClientRect.width || element.prop('offsetWidth'),
                     height: boundingClientRect.height || element.prop('offsetHeight'),
                     top: boundingClientRect.top + ($window.pageYOffset || $document[0].body.scrollTop || $document[0].documentElement.scrollTop),
-                    left: boundingClientRect.left + ($window.pageXOffset || $document[0].body.scrollLeft  || $document[0].documentElement.scrollLeft)
+                    left: boundingClientRect.left + ($window.pageXOffset || $document[0].body.scrollLeft || $document[0].documentElement.scrollLeft)
                 };
             }
         };
     }]);
 
 angular.module("mm.foundation.mediaQueries", [])
-    .factory('matchMedia', ['$document', '$window', function($document, $window) {
+    .factory('matchMedia', ['$document', '$window', function ($document, $window) {
         // MatchMedia for IE <= 9
-        return $window.matchMedia || (function matchMedia(doc, undefined){
+        return $window.matchMedia || (function matchMedia(doc, undefined) {
                 var bool,
                     docElem = doc.documentElement,
                     refNode = docElem.firstElementChild || docElem.firstChild,
@@ -401,7 +404,7 @@ angular.module("mm.foundation.mediaQueries", [])
 
             }($document[0]));
     }])
-    .factory('mediaQueries', ['$document', 'matchMedia', function($document, matchMedia) {
+    .factory('mediaQueries', ['$document', 'matchMedia', function ($document, matchMedia) {
         var head = angular.element($document[0].querySelector('head'));
         head.append('<meta class="foundation-mq-topbar" />');
         head.append('<meta class="foundation-mq-small" />');
@@ -411,9 +414,9 @@ angular.module("mm.foundation.mediaQueries", [])
         var regex = /^[\/\\'"]+|(;\s?})+|[\/\\'"]+$/g;
         var queries = {
             topbar: getComputedStyle(head[0].querySelector('meta.foundation-mq-topbar')).fontFamily.replace(regex, ''),
-            small : getComputedStyle(head[0].querySelector('meta.foundation-mq-small')).fontFamily.replace(regex, ''),
-            medium : getComputedStyle(head[0].querySelector('meta.foundation-mq-medium')).fontFamily.replace(regex, ''),
-            large : getComputedStyle(head[0].querySelector('meta.foundation-mq-large')).fontFamily.replace(regex, '')
+            small: getComputedStyle(head[0].querySelector('meta.foundation-mq-small')).fontFamily.replace(regex, ''),
+            medium: getComputedStyle(head[0].querySelector('meta.foundation-mq-medium')).fontFamily.replace(regex, ''),
+            large: getComputedStyle(head[0].querySelector('meta.foundation-mq-large')).fontFamily.replace(regex, '')
         };
 
         return {
@@ -444,28 +447,28 @@ angular.module("mm.foundation.mediaQueries", [])
  </li>
  </ul>
  */
-angular.module('mm.foundation.dropdownToggle', [ 'mm.foundation.position', 'mm.foundation.mediaQueries' ])
+angular.module('mm.foundation.dropdownToggle', ['mm.foundation.position', 'mm.foundation.mediaQueries'])
 
-    .controller('DropdownToggleController', ['$scope', '$attrs', 'mediaQueries', function($scope, $attrs, mediaQueries) {
-        this.small = function() {
+    .controller('DropdownToggleController', ['$scope', '$attrs', 'mediaQueries', function ($scope, $attrs, mediaQueries) {
+        this.small = function () {
             return mediaQueries.small() && !mediaQueries.medium();
         };
     }])
 
     .directive('dropdownToggle', ['$document', '$window', '$location', '$position', function ($document, $window, $location, $position) {
         var openElement = null,
-            closeMenu   = angular.noop;
+            closeMenu = angular.noop;
         return {
             restrict: 'CA',
             scope: {
                 dropdownToggle: '@'
             },
             controller: 'DropdownToggleController',
-            link: function(scope, element, attrs, controller) {
+            link: function (scope, element, attrs, controller) {
                 var parent = element.parent();
                 var dropdown = angular.element($document[0].querySelector(scope.dropdownToggle));
 
-                var parentHasDropdown = function() {
+                var parentHasDropdown = function () {
                     return parent.hasClass('has-dropdown');
                 };
 
@@ -534,10 +537,12 @@ angular.module('mm.foundation.dropdownToggle', [ 'mm.foundation.position', 'mm.f
                     dropdown.css('display', 'none');
                 }
 
-                scope.$watch('$location.path', function() { closeMenu(); });
+                scope.$watch('$location.path', function () {
+                    closeMenu();
+                });
 
                 element.on('click', onClick);
-                element.on('$destroy', function() {
+                element.on('$destroy', function () {
                     element.off('click', onClick);
                 });
             }
@@ -571,9 +576,9 @@ angular.module('mm.foundation.interchange', ['mm.foundation.mediaQueries'])
             mediaSize,
             formatList = {
                 'default': 'only screen',
-                landscape : 'only screen and (orientation: landscape)',
-                portrait : 'only screen and (orientation: portrait)',
-                retina : 'only screen and (-webkit-min-device-pixel-ratio: 2),' +
+                landscape: 'only screen and (orientation: landscape)',
+                portrait: 'only screen and (orientation: portrait)',
+                retina: 'only screen and (-webkit-min-device-pixel-ratio: 2),' +
                 'only screen and (min--moz-device-pixel-ratio: 2),' +
                 'only screen and (-o-min-device-pixel-ratio: 2/1),' +
                 'only screen and (min-device-pixel-ratio: 2),' +
@@ -619,9 +624,7 @@ angular.module('mm.foundation.interchange', ['mm.foundation.mediaQueries'])
              * @returns {boolean} True if the insert is a success
              */
             add: function (name, media) {
-                if (!name || !media ||
-                    !angular.isString(name) || !angular.isString(media) ||
-                    !!interchangeQueries[name]) {
+                if (!name || !media || !angular.isString(name) || !angular.isString(media) || !!interchangeQueries[name]) {
                     return false;
                 }
                 interchangeQueries[name] = media;
@@ -758,7 +761,8 @@ angular.module('mm.foundation.interchange', ['mm.foundation.mediaQueries'])
                 }
 
                 return {
-                    pre: function preLink($scope, $element, attrs) {},
+                    pre: function preLink($scope, $element, attrs) {
+                    },
                     post: function postLink($scope, $element, attrs) {
                         var currentFile, nodeName;
 
@@ -836,15 +840,15 @@ angular.module('mm.foundation.transition', [])
  *   - As a function, it represents a function to be called that will cause the transition to occur.
  * @return {Promise}  A promise that is resolved when the transition finishes.
  */
-    .factory('$transition', ['$q', '$timeout', '$rootScope', function($q, $timeout, $rootScope) {
+    .factory('$transition', ['$q', '$timeout', '$rootScope', function ($q, $timeout, $rootScope) {
 
-        var $transition = function(element, trigger, options) {
+        var $transition = function (element, trigger, options) {
             options = options || {};
             var deferred = $q.defer();
             var endEventName = $transition[options.animation ? "animationEndEventName" : "transitionEndEventName"];
 
-            var transitionEndHandler = function(event) {
-                $rootScope.$apply(function() {
+            var transitionEndHandler = function (event) {
+                $rootScope.$apply(function () {
                     element.unbind(endEventName, transitionEndHandler);
                     deferred.resolve(element);
                 });
@@ -855,16 +859,16 @@ angular.module('mm.foundation.transition', [])
             }
 
             // Wrap in a timeout to allow the browser time to update the DOM before the transition is to occur
-            $timeout(function() {
-                if ( angular.isString(trigger) ) {
+            $timeout(function () {
+                if (angular.isString(trigger)) {
                     element.addClass(trigger);
-                } else if ( angular.isFunction(trigger) ) {
+                } else if (angular.isFunction(trigger)) {
                     trigger(element);
-                } else if ( angular.isObject(trigger) ) {
+                } else if (angular.isObject(trigger)) {
                     element.css(trigger);
                 }
                 //If browser does not support transitions, instantly resolve
-                if ( !endEventName ) {
+                if (!endEventName) {
                     deferred.resolve(element);
                 }
             });
@@ -872,8 +876,8 @@ angular.module('mm.foundation.transition', [])
             // Add our custom cancel function to the promise that is returned
             // We can call this if we are about to run a new transition, which we know will prevent this transition from ending,
             // i.e. it will therefore never raise a transitionEnd event for that transition
-            deferred.promise.cancel = function() {
-                if ( endEventName ) {
+            deferred.promise.cancel = function () {
+                if (endEventName) {
                     element.unbind(endEventName, transitionEndHandler);
                 }
                 deferred.reject('Transition cancelled');
@@ -896,13 +900,15 @@ angular.module('mm.foundation.transition', [])
             'OTransition': 'oAnimationEnd',
             'transition': 'animationend'
         };
+
         function findEndEventName(endEventNames) {
-            for (var name in endEventNames){
+            for (var name in endEventNames) {
                 if (transElement.style[name] !== undefined) {
                     return endEventNames[name];
                 }
             }
         }
+
         $transition.transitionEndEventName = findEndEventName(transitionEndEventNames);
         $transition.animationEndEventName = findEndEventName(animationEndEventNames);
         return $transition;
@@ -933,7 +939,7 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
                             }
                         }
                     },
-                    keys: function() {
+                    keys: function () {
                         var keys = [];
                         for (var i = 0; i < stack.length; i++) {
                             keys.push(stack[i].key);
@@ -981,7 +987,7 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
                     scope.animate = true;
                 });
                 // Lebowski:: mapping backdrop to its modal window
-                element.addClass($modalStack.getTop().value.windowClass+"Backdrop").attr('data-modal-window-class',$modalStack.getTop().value.windowClass);
+                element.addClass($modalStack.getTop().value.windowClass + "Backdrop").attr('data-modal-window-class', $modalStack.getTop().value.windowClass);
 
                 scope.close = function (evt) {
                     var modal = $modalStack.getTop();
@@ -1016,7 +1022,7 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
                     if (element[0].querySelectorAll('[autofocus]').length > 0) {
                         element[0].querySelectorAll('[autofocus]')[0].focus();
                     }
-                    else{
+                    else {
                         // otherwise focus the freshly-opened modal
                         element[0].focus();
                     }
@@ -1045,7 +1051,7 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
                 return topBackdropIndex;
             }
 
-            $rootScope.$watch(backdropIndex, function(newBackdropIndex){
+            $rootScope.$watch(backdropIndex, function (newBackdropIndex) {
                 if (backdropScope) {
                     backdropScope.index = newBackdropIndex;
                 }
@@ -1059,7 +1065,7 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
                 openedWindows.remove(modalInstance);
 
                 //remove window DOM element
-                removeAfterAnimate(modalWindow.modalDomEl, modalWindow.modalScope, 300, function() {
+                removeAfterAnimate(modalWindow.modalDomEl, modalWindow.modalScope, 300, function () {
                     modalWindow.modalScope.$destroy();
                     body.toggleClass(OPENED_MODAL_CLASS, openedWindows.length() > 0);
                     checkRemoveBackdrop();
@@ -1105,9 +1111,10 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
                     afterAnimating.done = true;
                     // Lebowski:: remove own backdrop
                     // data-modal-window-class
-                    var backdropEl = angular.element('[data-modal-window-class='+domEl.attr('window-class')+']');
-                    if(backdropEl.length){
-                        removeAfterAnimate(backdropEl, backdropEl.scope(), 150, function(){});
+                    var backdropEl = angular.element('[data-modal-window-class=' + domEl.attr('window-class') + ']');
+                    if (backdropEl.length) {
+                        removeAfterAnimate(backdropEl, backdropEl.scope(), 150, function () {
+                        });
                     }
                     domEl.remove();
 
@@ -1132,7 +1139,7 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
 
             $modalStack.open = function (modalInstance, modal) {
                 // Added for Lebowski.. Closes other modals if this option is set.
-                if(modal.closeOthers){
+                if (modal.closeOthers) {
                     $modalStack.dismissAll("closeOthers");
                 }
                 openedWindows.add(modalInstance, {
@@ -1165,7 +1172,7 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
                 var scrollY = $window.pageYOffset || 0;
                 var openAt = scrollY + marginTop;
 
-                var angularDomEl = angular.element('<div modal-window style="visibility: visible; top:' + openAt +'px;"></div>')
+                var angularDomEl = angular.element('<div modal-window style="visibility: visible; top:' + openAt + 'px;"></div>')
                     .attr({
                         'window-class': modal.windowClass,
                         'index': openedWindows.length() - 1,
@@ -1180,7 +1187,8 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
             };
 
             $modalStack.close = function (modalInstance, result) {
-                var modalWindow = openedWindows.get(modalInstance).value;
+                var modalInst = openedWindows.get(modalInstance);
+                var modalWindow = modalInst && modalInst.value;
                 if (modalWindow) {
                     modalWindow.deferred.resolve(result);
                     removeModalWindow(modalInstance);
@@ -1188,7 +1196,8 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
             };
 
             $modalStack.dismiss = function (modalInstance, reason) {
-                var modalWindow = openedWindows.get(modalInstance).value;
+                var modalInst = openedWindows.get(modalInstance);
+                var modalWindow = modalInst && modalInst.value;
                 if (modalWindow) {
                     modalWindow.deferred.reject(reason);
                     removeModalWindow(modalInstance);
@@ -1338,22 +1347,22 @@ angular.module("mm.foundation.offcanvas", [])
 
                 win.bind("resize.body", $scope.hide);
 
-                $scope.$on('$destroy', function() {
+                $scope.$on('$destroy', function () {
                     win.unbind("resize.body", $scope.hide);
                 });
 
             },
-            controller: ['$scope', function($scope) {
+            controller: ['$scope', function ($scope) {
 
-                this.leftToggle = function() {
+                this.leftToggle = function () {
                     $scope.sidebar.toggleClass("move-right");
                 };
 
-                this.rightToggle = function() {
+                this.rightToggle = function () {
                     $scope.sidebar.toggleClass("move-left");
                 };
 
-                this.hide = function() {
+                this.hide = function () {
                     $scope.hide();
                 };
             }]
@@ -1410,9 +1419,9 @@ angular.module('mm.foundation.pagination', [])
         var self = this,
             setNumPages = $attrs.numPages ? $parse($attrs.numPages).assign : angular.noop;
 
-        this.init = function(defaultItemsPerPage) {
+        this.init = function (defaultItemsPerPage) {
             if ($attrs.itemsPerPage) {
-                $scope.$parent.$watch($parse($attrs.itemsPerPage), function(value) {
+                $scope.$parent.$watch($parse($attrs.itemsPerPage), function (value) {
                     self.itemsPerPage = parseInt(value, 10);
                     $scope.totalPages = self.calculateTotalPages();
                 });
@@ -1421,52 +1430,52 @@ angular.module('mm.foundation.pagination', [])
             }
         };
 
-        this.noPrevious = function() {
+        this.noPrevious = function () {
             return this.page === 1;
         };
-        this.noNext = function() {
+        this.noNext = function () {
             return this.page === $scope.totalPages;
         };
 
-        this.isActive = function(page) {
+        this.isActive = function (page) {
             return this.page === page;
         };
 
-        this.calculateTotalPages = function() {
+        this.calculateTotalPages = function () {
             var totalPages = this.itemsPerPage < 1 ? 1 : Math.ceil($scope.totalItems / this.itemsPerPage);
             return Math.max(totalPages || 0, 1);
         };
 
-        this.getAttributeValue = function(attribute, defaultValue, interpolate) {
+        this.getAttributeValue = function (attribute, defaultValue, interpolate) {
             return angular.isDefined(attribute) ? (interpolate ? $interpolate(attribute)($scope.$parent) : $scope.$parent.$eval(attribute)) : defaultValue;
         };
 
-        this.render = function() {
+        this.render = function () {
             this.page = parseInt($scope.page, 10) || 1;
             if (this.page > 0 && this.page <= $scope.totalPages) {
                 $scope.pages = this.getPages(this.page, $scope.totalPages);
             }
         };
 
-        $scope.selectPage = function(page) {
-            if ( ! self.isActive(page) && page > 0 && page <= $scope.totalPages) {
+        $scope.selectPage = function (page) {
+            if (!self.isActive(page) && page > 0 && page <= $scope.totalPages) {
                 $scope.page = page;
-                $scope.onSelectPage({ page: page });
+                $scope.onSelectPage({page: page});
             }
         };
 
-        $scope.$watch('page', function() {
+        $scope.$watch('page', function () {
             self.render();
         });
 
-        $scope.$watch('totalItems', function() {
+        $scope.$watch('totalItems', function () {
             $scope.totalPages = self.calculateTotalPages();
         });
 
-        $scope.$watch('totalPages', function(value) {
+        $scope.$watch('totalPages', function (value) {
             setNumPages($scope.$parent, value); // Readonly variable
 
-            if ( self.page > value ) {
+            if (self.page > value) {
                 $scope.selectPage(value);
             } else {
                 self.render();
@@ -1485,33 +1494,33 @@ angular.module('mm.foundation.pagination', [])
         rotate: true
     })
 
-    .directive('pagination', ['$parse', 'paginationConfig', function($parse, config) {
+    .directive('pagination', ['$parse', 'paginationConfig', function ($parse, config) {
         return {
             restrict: 'EA',
             scope: {
                 page: '=',
                 totalItems: '=',
-                onSelectPage:' &'
+                onSelectPage: ' &'
             },
             controller: 'PaginationController',
             templateUrl: 'template/pagination/pagination.html',
             replace: true,
-            link: function(scope, element, attrs, paginationCtrl) {
+            link: function (scope, element, attrs, paginationCtrl) {
 
                 // Setup configuration parameters
                 var maxSize,
-                    boundaryLinks  = paginationCtrl.getAttributeValue(attrs.boundaryLinks,  config.boundaryLinks      ),
-                    directionLinks = paginationCtrl.getAttributeValue(attrs.directionLinks, config.directionLinks     ),
-                    firstText      = paginationCtrl.getAttributeValue(attrs.firstText,      config.firstText,     true),
-                    previousText   = paginationCtrl.getAttributeValue(attrs.previousText,   config.previousText,  true),
-                    nextText       = paginationCtrl.getAttributeValue(attrs.nextText,       config.nextText,      true),
-                    lastText       = paginationCtrl.getAttributeValue(attrs.lastText,       config.lastText,      true),
-                    rotate         = paginationCtrl.getAttributeValue(attrs.rotate,         config.rotate);
+                    boundaryLinks = paginationCtrl.getAttributeValue(attrs.boundaryLinks, config.boundaryLinks),
+                    directionLinks = paginationCtrl.getAttributeValue(attrs.directionLinks, config.directionLinks),
+                    firstText = paginationCtrl.getAttributeValue(attrs.firstText, config.firstText, true),
+                    previousText = paginationCtrl.getAttributeValue(attrs.previousText, config.previousText, true),
+                    nextText = paginationCtrl.getAttributeValue(attrs.nextText, config.nextText, true),
+                    lastText = paginationCtrl.getAttributeValue(attrs.lastText, config.lastText, true),
+                    rotate = paginationCtrl.getAttributeValue(attrs.rotate, config.rotate);
 
                 paginationCtrl.init(config.itemsPerPage);
 
                 if (attrs.maxSize) {
-                    scope.$parent.$watch($parse(attrs.maxSize), function(value) {
+                    scope.$parent.$watch($parse(attrs.maxSize), function (value) {
                         maxSize = parseInt(value, 10);
                         paginationCtrl.render();
                     });
@@ -1527,7 +1536,7 @@ angular.module('mm.foundation.pagination', [])
                     };
                 }
 
-                paginationCtrl.getPages = function(currentPage, totalPages) {
+                paginationCtrl.getPages = function (currentPage, totalPages) {
                     var pages = [];
 
                     // Default page limits
@@ -1535,15 +1544,15 @@ angular.module('mm.foundation.pagination', [])
                     var isMaxSized = ( angular.isDefined(maxSize) && maxSize < totalPages );
 
                     // recompute if maxSize
-                    if ( isMaxSized ) {
-                        if ( rotate ) {
+                    if (isMaxSized) {
+                        if (rotate) {
                             // Current page is displayed in the middle of the visible ones
-                            startPage = Math.max(currentPage - Math.floor(maxSize/2), 1);
-                            endPage   = startPage + maxSize - 1;
+                            startPage = Math.max(currentPage - Math.floor(maxSize / 2), 1);
+                            endPage = startPage + maxSize - 1;
 
                             // Adjust if limit is exceeded
                             if (endPage > totalPages) {
-                                endPage   = totalPages;
+                                endPage = totalPages;
                                 startPage = endPage - maxSize + 1;
                             }
                         } else {
@@ -1562,13 +1571,13 @@ angular.module('mm.foundation.pagination', [])
                     }
 
                     // Add links to move between page sets
-                    if ( isMaxSized && ! rotate ) {
-                        if ( startPage > 1 ) {
+                    if (isMaxSized && !rotate) {
+                        if (startPage > 1) {
                             var previousPageSet = makePage(startPage - 1, '...', false, false);
                             pages.unshift(previousPageSet);
                         }
 
-                        if ( endPage < totalPages ) {
+                        if (endPage < totalPages) {
                             var nextPageSet = makePage(endPage + 1, '...', false, false);
                             pages.push(nextPageSet);
                         }
@@ -1605,23 +1614,23 @@ angular.module('mm.foundation.pagination', [])
         align: true
     })
 
-    .directive('pager', ['pagerConfig', function(config) {
+    .directive('pager', ['pagerConfig', function (config) {
         return {
             restrict: 'EA',
             scope: {
                 page: '=',
                 totalItems: '=',
-                onSelectPage:' &'
+                onSelectPage: ' &'
             },
             controller: 'PaginationController',
             templateUrl: 'template/pagination/pager.html',
             replace: true,
-            link: function(scope, element, attrs, paginationCtrl) {
+            link: function (scope, element, attrs, paginationCtrl) {
 
                 // Setup configuration parameters
                 var previousText = paginationCtrl.getAttributeValue(attrs.previousText, config.previousText, true),
-                    nextText         = paginationCtrl.getAttributeValue(attrs.nextText,     config.nextText,     true),
-                    align            = paginationCtrl.getAttributeValue(attrs.align,        config.align);
+                    nextText = paginationCtrl.getAttributeValue(attrs.nextText, config.nextText, true),
+                    align = paginationCtrl.getAttributeValue(attrs.align, config.align);
 
                 paginationCtrl.init(config.itemsPerPage);
 
@@ -1636,7 +1645,7 @@ angular.module('mm.foundation.pagination', [])
                     };
                 }
 
-                paginationCtrl.getPages = function(currentPage) {
+                paginationCtrl.getPages = function (currentPage) {
                     return [
                         makePage(currentPage - 1, previousText, paginationCtrl.noPrevious(), true, false),
                         makePage(currentPage + 1, nextText, paginationCtrl.noNext(), false, true)
@@ -1651,13 +1660,13 @@ angular.module('mm.foundation.pagination', [])
  * function, placement as a function, inside, support for more triggers than
  * just mouse enter/leave, html tooltips, and selector delegation.
  */
-angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundation.bindHtml' ] )
+angular.module('mm.foundation.tooltip', ['mm.foundation.position', 'mm.foundation.bindHtml'])
 
 /**
  * The $tooltip service creates tooltip- and popover-like directives as well as
  * houses global options for them.
  */
-    .provider( '$tooltip', function () {
+    .provider('$tooltip', function () {
         // The default options tooltip and popover.
         var defaultOptions = {
             placement: 'top',
@@ -1684,8 +1693,8 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
    *     $tooltipProvider.options( { placement: 'left' } );
    *   });
          */
-        this.options = function( value ) {
-            angular.extend( globalOptions, value );
+        this.options = function (value) {
+            angular.extend(globalOptions, value);
         };
 
         /**
@@ -1693,17 +1702,17 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
          *
          *   $tooltipProvider.setTriggers( 'openTrigger': 'closeTrigger' );
          */
-        this.setTriggers = function setTriggers ( triggers ) {
-            angular.extend( triggerMap, triggers );
+        this.setTriggers = function setTriggers(triggers) {
+            angular.extend(triggerMap, triggers);
         };
 
         /**
          * This is a helper function for translating camel-case to snake-case.
          */
-        function snake_case(name){
+        function snake_case(name) {
             var regexp = /[A-Z]/g;
             var separator = '-';
-            return name.replace(regexp, function(letter, pos) {
+            return name.replace(regexp, function (letter, pos) {
                 return (pos ? separator : '') + letter.toLowerCase();
             });
         }
@@ -1712,9 +1721,9 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
          * Returns the actual instance of the $tooltip service.
          * TODO support multiple triggers
          */
-        this.$get = [ '$window', '$compile', '$timeout', '$parse', '$document', '$position', '$interpolate', function ( $window, $compile, $timeout, $parse, $document, $position, $interpolate ) {
-            return function $tooltip ( type, prefix, defaultTriggerShow ) {
-                var options = angular.extend( {}, defaultOptions, globalOptions );
+        this.$get = ['$window', '$compile', '$timeout', '$parse', '$document', '$position', '$interpolate', function ($window, $compile, $timeout, $parse, $document, $position, $interpolate) {
+            return function $tooltip(type, prefix, defaultTriggerShow) {
+                var options = angular.extend({}, defaultOptions, globalOptions);
 
                 /**
                  * Returns an object of show and hide triggers.
@@ -1730,7 +1739,7 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
                  * undefined; otherwise, it uses the `triggerMap` value of the show
                  * trigger; else it will just use the show trigger.
                  */
-                function getTriggers ( trigger ) {
+                function getTriggers(trigger) {
                     var show = trigger || options.trigger || defaultTriggerShow;
                     var hide = triggerMap[show] || show;
                     return {
@@ -1739,50 +1748,50 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
                     };
                 }
 
-                var directiveName = snake_case( type );
+                var directiveName = snake_case(type);
 
                 var startSym = $interpolate.startSymbol();
                 var endSym = $interpolate.endSymbol();
                 var template =
-                    '<div '+ directiveName +'-popup '+
-                    'title="'+startSym+'tt_title'+endSym+'" '+
-                    'content="'+startSym+'tt_content'+endSym+'" '+
-                    'placement="'+startSym+'tt_placement'+endSym+'" '+
-                    'animation="tt_animation" '+
-                    'is-open="tt_isOpen"'+
-                    '>'+
+                    '<div ' + directiveName + '-popup ' +
+                    'title="' + startSym + 'tt_title' + endSym + '" ' +
+                    'content="' + startSym + 'tt_content' + endSym + '" ' +
+                    'placement="' + startSym + 'tt_placement' + endSym + '" ' +
+                    'animation="tt_animation" ' +
+                    'is-open="tt_isOpen"' +
+                    '>' +
                     '</div>';
 
                 return {
                     restrict: 'EA',
                     scope: true,
                     compile: function (tElem, tAttrs) {
-                        var tooltipLinker = $compile( template );
+                        var tooltipLinker = $compile(template);
 
-                        return function link ( scope, element, attrs ) {
+                        return function link(scope, element, attrs) {
                             var tooltip;
                             var transitionTimeout;
                             var popupTimeout;
-                            var appendToBody = angular.isDefined( options.appendToBody ) ? options.appendToBody : false;
-                            var triggers = getTriggers( undefined );
+                            var appendToBody = angular.isDefined(options.appendToBody) ? options.appendToBody : false;
+                            var triggers = getTriggers(undefined);
                             var hasRegisteredTriggers = false;
-                            var hasEnableExp = angular.isDefined(attrs[prefix+'Enable']);
+                            var hasEnableExp = angular.isDefined(attrs[prefix + 'Enable']);
 
-                            var positionTooltip = function (){
+                            var positionTooltip = function () {
                                 var position,
                                     ttWidth,
                                     ttHeight,
                                     ttPosition;
                                 // Get the position of the directive element.
-                                position = appendToBody ? $position.offset( element ) : $position.position( element );
+                                position = appendToBody ? $position.offset(element) : $position.position(element);
 
                                 // Get the height and width of the tooltip so we can center it.
-                                ttWidth = tooltip.prop( 'offsetWidth' );
-                                ttHeight = tooltip.prop( 'offsetHeight' );
+                                ttWidth = tooltip.prop('offsetWidth');
+                                ttHeight = tooltip.prop('offsetHeight');
 
                                 // Calculate the tooltip's top and left coordinates to center it with
                                 // this directive.
-                                switch ( scope.tt_placement ) {
+                                switch (scope.tt_placement) {
                                     case 'right':
                                         ttPosition = {
                                             top: position.top + position.height / 2 - ttHeight / 2,
@@ -1805,13 +1814,13 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
                                     case 'top_center':
                                         ttPosition = {
                                             top: position.top - ttHeight - 10,
-                                            left: position.left + position.width/2 - ttWidth/2
+                                            left: position.left + position.width / 2 - ttWidth / 2
                                         };
                                         break;
                                     case 'bottom_center':
                                         ttPosition = {
                                             top: position.top + position.height + 10,
-                                            left: position.left + position.width/2 - ttWidth/2
+                                            left: position.left + position.width / 2 - ttWidth / 2
                                         };
                                         break;
                                     // LEB
@@ -1827,7 +1836,7 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
                                 ttPosition.left += 'px';
 
                                 // Now set the calculated positioning.
-                                tooltip.css( ttPosition );
+                                tooltip.css(ttPosition);
 
                             };
 
@@ -1835,8 +1844,8 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
                             // TODO add ability to start tooltip opened
                             scope.tt_isOpen = false;
 
-                            function toggleTooltipBind () {
-                                if ( ! scope.tt_isOpen ) {
+                            function toggleTooltipBind() {
+                                if (!scope.tt_isOpen) {
                                     showTooltipBind();
                                 } else {
                                     hideTooltipBind();
@@ -1845,18 +1854,20 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
 
                             // Show the tooltip with delay if specified, otherwise show it immediately
                             function showTooltipBind() {
-                                if(hasEnableExp && !scope.$eval(attrs[prefix+'Enable'])) {
+                                if (hasEnableExp && !scope.$eval(attrs[prefix + 'Enable'])) {
                                     return;
                                 }
-                                if ( scope.tt_popupDelay ) {
-                                    popupTimeout = $timeout( show, scope.tt_popupDelay, false );
-                                    popupTimeout.then(function(reposition){reposition();});
+                                if (scope.tt_popupDelay) {
+                                    popupTimeout = $timeout(show, scope.tt_popupDelay, false);
+                                    popupTimeout.then(function (reposition) {
+                                        reposition();
+                                    });
                                 } else {
                                     show()();
                                 }
                             }
 
-                            function hideTooltipBind () {
+                            function hideTooltipBind() {
                                 scope.$apply(function () {
                                     hide();
                                 });
@@ -1867,7 +1878,7 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
 
 
                                 // Don't show empty tooltips.
-                                if ( ! scope.tt_content ) {
+                                if (!scope.tt_content) {
                                     return angular.noop;
                                 }
 
@@ -1875,19 +1886,19 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
 
                                 // If there is a pending remove transition, we must cancel it, lest the
                                 // tooltip be mysteriously removed.
-                                if ( transitionTimeout ) {
-                                    $timeout.cancel( transitionTimeout );
+                                if (transitionTimeout) {
+                                    $timeout.cancel(transitionTimeout);
                                 }
 
                                 // Set the initial positioning.
-                                tooltip.css({ top: 0, left: 0, display: 'block' });
+                                tooltip.css({top: 0, left: 0, display: 'block'});
 
                                 // Now we add it to the DOM because need some info about it. But it's not
                                 // visible yet anyway.
-                                if ( appendToBody ) {
-                                    $document.find( 'body' ).append( tooltip );
+                                if (appendToBody) {
+                                    $document.find('body').append(tooltip);
                                 } else {
-                                    element.after( tooltip );
+                                    element.after(tooltip);
                                 }
 
                                 positionTooltip();
@@ -1907,7 +1918,7 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
                                 scope.tt_isOpen = false;
 
                                 //if tooltip is going to be shown after delay, we must cancel this
-                                $timeout.cancel( popupTimeout );
+                                $timeout.cancel(popupTimeout);
 
                                 // Customized for LEB : added following
                                 removeTooltip();
@@ -1927,7 +1938,8 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
                                 if (tooltip) {
                                     removeTooltip();
                                 }
-                                tooltip = tooltipLinker(scope, function () {});
+                                tooltip = tooltipLinker(scope, function () {
+                                });
 
                                 // Get contents rendered into the tooltip
                                 scope.$digest();
@@ -1941,9 +1953,9 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
                             }
 
                             // Customized for LEB :: added an event checker function
-                            function isValidEvent(evt){
-                                for(var key in triggerMap) {
-                                    if(evt === triggerMap[key] || evt === key){
+                            function isValidEvent(evt) {
+                                for (var key in triggerMap) {
+                                    if (evt === triggerMap[key] || evt === key) {
                                         return true;
                                     }
                                 }
@@ -1953,71 +1965,72 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
                             /**
                              * Observe the relevant attributes.
                              */
-                            attrs.$observe( type, function ( val ) {
+                            attrs.$observe(type, function (val) {
                                 scope.tt_content = val;
 
-                                if (!val && scope.tt_isOpen ) {
+                                if (!val && scope.tt_isOpen) {
                                     hide();
                                 }
                             });
 
-                            attrs.$observe( prefix+'Title', function ( val ) {
+                            attrs.$observe(prefix + 'Title', function (val) {
                                 scope.tt_title = val;
                             });
 
-                            attrs[prefix+'Placement'] = attrs[prefix+'Placement'] || null;
+                            attrs[prefix + 'Placement'] = attrs[prefix + 'Placement'] || null;
 
-                            attrs.$observe( prefix+'Placement', function ( val ) {
-                                scope.tt_placement = angular.isDefined( val ) && val ? val : options.placement;
+                            attrs.$observe(prefix + 'Placement', function (val) {
+                                scope.tt_placement = angular.isDefined(val) && val ? val : options.placement;
                             });
 
-                            attrs[prefix+'PopupDelay'] = attrs[prefix+'PopupDelay'] || null;
+                            attrs[prefix + 'PopupDelay'] = attrs[prefix + 'PopupDelay'] || null;
 
-                            attrs.$observe( prefix+'PopupDelay', function ( val ) {
-                                var delay = parseInt( val, 10 );
-                                scope.tt_popupDelay = ! isNaN(delay) ? delay : options.popupDelay;
+                            attrs.$observe(prefix + 'PopupDelay', function (val) {
+                                var delay = parseInt(val, 10);
+                                scope.tt_popupDelay = !isNaN(delay) ? delay : options.popupDelay;
                             });
 
                             // Customized for LEB :: hide tooltip on certain event triggered for e.g. click
-                            attrs.$observe( prefix+'Opthide', function (val){
-                                if(val && isValidEvent(val)){
-                                    element.bind( val, hideTooltipBind );
+                            attrs.$observe(prefix + 'Opthide', function (val) {
+                                if (val && isValidEvent(val)) {
+                                    element.bind(val, hideTooltipBind);
                                 }
                             });
 
-                            var unregisterTriggers = function() {
-                                if ( hasRegisteredTriggers ) {
-                                    if ( angular.isFunction( triggers.show ) ) {
+                            var unregisterTriggers = function () {
+                                if (hasRegisteredTriggers) {
+                                    if (angular.isFunction(triggers.show)) {
                                         unregisterTriggerFunction();
                                     } else {
-                                        element.unbind( triggers.show, showTooltipBind );
-                                        element.unbind( triggers.hide, hideTooltipBind );
+                                        element.unbind(triggers.show, showTooltipBind);
+                                        element.unbind(triggers.hide, hideTooltipBind);
                                     }
                                 }
                             };
 
-                            var unregisterTriggerFunction = function () {};
+                            var unregisterTriggerFunction = function () {
+                            };
 
-                            attrs[prefix+'Trigger'] = attrs[prefix+'Trigger'] || null;
+                            attrs[prefix + 'Trigger'] = attrs[prefix + 'Trigger'] || null;
 
-                            attrs.$observe( prefix+'Trigger', function ( val ) {
+                            attrs.$observe(prefix + 'Trigger', function (val) {
                                 unregisterTriggers();
                                 unregisterTriggerFunction();
 
-                                triggers = getTriggers( val );
+                                triggers = getTriggers(val);
 
-                                if ( angular.isFunction( triggers.show ) ) {
-                                    unregisterTriggerFunction = scope.$watch( function () {
-                                        return triggers.show( scope, element, attrs );
-                                    }, function ( val ) {
-                                        return val ? $timeout( show ) : $timeout( hide );
+                                if (angular.isFunction(triggers.show)) {
+                                    unregisterTriggerFunction = scope.$watch(function () {
+                                        return triggers.show(scope, element, attrs);
+                                    }, function (val) {
+                                        return val ? $timeout(show) : $timeout(hide);
                                     });
                                 } else {
-                                    if ( triggers.show === triggers.hide ) {
-                                        element.bind( triggers.show, toggleTooltipBind );
+                                    if (triggers.show === triggers.hide) {
+                                        element.bind(triggers.show, toggleTooltipBind);
                                     } else {
-                                        element.bind( triggers.show, showTooltipBind );
-                                        element.bind( triggers.hide, hideTooltipBind );
+                                        element.bind(triggers.show, showTooltipBind);
+                                        element.bind(triggers.hide, hideTooltipBind);
                                     }
                                 }
 
@@ -2027,16 +2040,16 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
                             var animation = scope.$eval(attrs[prefix + 'Animation']);
                             scope.tt_animation = angular.isDefined(animation) ? !!animation : options.animation;
 
-                            attrs.$observe( prefix+'AppendToBody', function ( val ) {
-                                appendToBody = angular.isDefined( val ) ? $parse( val )( scope ) : appendToBody;
+                            attrs.$observe(prefix + 'AppendToBody', function (val) {
+                                appendToBody = angular.isDefined(val) ? $parse(val)(scope) : appendToBody;
                             });
 
                             // if a tooltip is attached to <body> we need to remove it on
                             // location change as its parent scope will probably not be destroyed
                             // by the change.
-                            if ( appendToBody ) {
-                                scope.$on('$locationChangeSuccess', function closeTooltipOnLocationChangeSuccess () {
-                                    if ( scope.tt_isOpen ) {
+                            if (appendToBody) {
+                                scope.$on('$locationChangeSuccess', function closeTooltipOnLocationChangeSuccess() {
+                                    if (scope.tt_isOpen) {
                                         hide();
                                     }
                                 });
@@ -2044,8 +2057,8 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
 
                             // Make sure tooltip is destroyed and removed.
                             scope.$on('$destroy', function onDestroyTooltip() {
-                                $timeout.cancel( transitionTimeout );
-                                $timeout.cancel( popupTimeout );
+                                $timeout.cancel(transitionTimeout);
+                                $timeout.cancel(popupTimeout);
                                 unregisterTriggers();
                                 unregisterTriggerFunction();
                                 removeTooltip();
@@ -2057,30 +2070,30 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
         }];
     })
 
-    .directive( 'tooltipPopup', function () {
+    .directive('tooltipPopup', function () {
         return {
             restrict: 'EA',
             replace: true,
-            scope: { content: '@', placement: '@', animation: '&', isOpen: '&' },
+            scope: {content: '@', placement: '@', animation: '&', isOpen: '&'},
             templateUrl: 'template/tooltip/tooltip-popup.html'
         };
     })
 
-    .directive( 'tooltip', [ '$tooltip', function ( $tooltip ) {
-        return $tooltip( 'tooltip', 'tooltip', 'mouseenter' );
+    .directive('tooltip', ['$tooltip', function ($tooltip) {
+        return $tooltip('tooltip', 'tooltip', 'mouseenter');
     }])
 
-    .directive( 'tooltipHtmlUnsafePopup', function () {
+    .directive('tooltipHtmlUnsafePopup', function () {
         return {
             restrict: 'EA',
             replace: true,
-            scope: { content: '@', placement: '@', animation: '&', isOpen: '&' },
+            scope: {content: '@', placement: '@', animation: '&', isOpen: '&'},
             templateUrl: 'template/tooltip/tooltip-html-unsafe-popup.html'
         };
     })
 
-    .directive( 'tooltipHtmlUnsafe', [ '$tooltip', function ( $tooltip ) {
-        return $tooltip( 'tooltipHtmlUnsafe', 'tooltip', 'mouseenter' );
+    .directive('tooltipHtmlUnsafe', ['$tooltip', function ($tooltip) {
+        return $tooltip('tooltipHtmlUnsafe', 'tooltip', 'mouseenter');
     }]);
 
 /**
@@ -2088,19 +2101,19 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
  * function, placement as a function, inside, support for more triggers than
  * just mouse enter/leave, html popovers, and selector delegatation.
  */
-angular.module( 'mm.foundation.popover', [ 'mm.foundation.tooltip' ] )
+angular.module('mm.foundation.popover', ['mm.foundation.tooltip'])
 
-    .directive( 'popoverPopup', function () {
+    .directive('popoverPopup', function () {
         return {
             restrict: 'EA',
             replace: true,
-            scope: { title: '@', content: '@', placement: '@', animation: '&', isOpen: '&' },
+            scope: {title: '@', content: '@', placement: '@', animation: '&', isOpen: '&'},
             templateUrl: 'template/popover/popover.html'
         };
     })
 
-    .directive( 'popover', [ '$tooltip', function ( $tooltip ) {
-        return $tooltip( 'popover', 'popover', 'click' );
+    .directive('popover', ['$tooltip', function ($tooltip) {
+        return $tooltip('popover', 'popover', 'click');
     }]);
 
 angular.module('mm.foundation.progressbar', ['mm.foundation.transition'])
@@ -2110,34 +2123,34 @@ angular.module('mm.foundation.progressbar', ['mm.foundation.transition'])
         max: 100
     })
 
-    .controller('ProgressController', ['$scope', '$attrs', 'progressConfig', '$transition', function($scope, $attrs, progressConfig, $transition) {
+    .controller('ProgressController', ['$scope', '$attrs', 'progressConfig', '$transition', function ($scope, $attrs, progressConfig, $transition) {
         var self = this,
             bars = [],
             max = angular.isDefined($attrs.max) ? $scope.$parent.$eval($attrs.max) : progressConfig.max,
             animate = angular.isDefined($attrs.animate) ? $scope.$parent.$eval($attrs.animate) : progressConfig.animate;
 
-        this.addBar = function(bar, element) {
+        this.addBar = function (bar, element) {
             var oldValue = 0, index = bar.$parent.$index;
-            if ( angular.isDefined(index) &&  bars[index] ) {
+            if (angular.isDefined(index) && bars[index]) {
                 oldValue = bars[index].value;
             }
             bars.push(bar);
 
             this.update(element, bar.value, oldValue);
 
-            bar.$watch('value', function(value, oldValue) {
+            bar.$watch('value', function (value, oldValue) {
                 if (value !== oldValue) {
                     self.update(element, value, oldValue);
                 }
             });
 
-            bar.$on('$destroy', function() {
+            bar.$on('$destroy', function () {
                 self.removeBar(bar);
             });
         };
 
         // Update bar element width
-        this.update = function(element, newValue, oldValue) {
+        this.update = function (element, newValue, oldValue) {
             var percent = this.getPercentage(newValue);
 
             if (animate) {
@@ -2148,16 +2161,16 @@ angular.module('mm.foundation.progressbar', ['mm.foundation.transition'])
             }
         };
 
-        this.removeBar = function(bar) {
+        this.removeBar = function (bar) {
             bars.splice(bars.indexOf(bar), 1);
         };
 
-        this.getPercentage = function(value) {
+        this.getPercentage = function (value) {
             return Math.round(100 * value / max);
         };
     }])
 
-    .directive('progress', function() {
+    .directive('progress', function () {
         return {
             restrict: 'EA',
             replace: true,
@@ -2170,7 +2183,7 @@ angular.module('mm.foundation.progressbar', ['mm.foundation.transition'])
         };
     })
 
-    .directive('bar', function() {
+    .directive('bar', function () {
         return {
             restrict: 'EA',
             replace: true,
@@ -2181,13 +2194,13 @@ angular.module('mm.foundation.progressbar', ['mm.foundation.transition'])
                 type: '@'
             },
             templateUrl: 'template/progressbar/bar.html',
-            link: function(scope, element, attrs, progressCtrl) {
+            link: function (scope, element, attrs, progressCtrl) {
                 progressCtrl.addBar(scope, element);
             }
         };
     })
 
-    .directive('progressbar', function() {
+    .directive('progressbar', function () {
         return {
             restrict: 'EA',
             replace: true,
@@ -2198,7 +2211,7 @@ angular.module('mm.foundation.progressbar', ['mm.foundation.transition'])
                 type: '@'
             },
             templateUrl: 'template/progressbar/progressbar.html',
-            link: function(scope, element, attrs, progressCtrl) {
+            link: function (scope, element, attrs, progressCtrl) {
                 progressCtrl.addBar(scope, angular.element(element.children()[0]));
             }
         };
@@ -2212,58 +2225,58 @@ angular.module('mm.foundation.rating', [])
         stateOff: null
     })
 
-    .controller('RatingController', ['$scope', '$attrs', '$parse', 'ratingConfig', function($scope, $attrs, $parse, ratingConfig) {
+    .controller('RatingController', ['$scope', '$attrs', '$parse', 'ratingConfig', function ($scope, $attrs, $parse, ratingConfig) {
 
         this.maxRange = angular.isDefined($attrs.max) ? $scope.$parent.$eval($attrs.max) : ratingConfig.max;
         this.stateOn = angular.isDefined($attrs.stateOn) ? $scope.$parent.$eval($attrs.stateOn) : ratingConfig.stateOn;
         this.stateOff = angular.isDefined($attrs.stateOff) ? $scope.$parent.$eval($attrs.stateOff) : ratingConfig.stateOff;
 
-        this.createRateObjects = function(states) {
+        this.createRateObjects = function (states) {
             var defaultOptions = {
                 stateOn: this.stateOn,
                 stateOff: this.stateOff
             };
 
             for (var i = 0, n = states.length; i < n; i++) {
-                states[i] = angular.extend({ index: i }, defaultOptions, states[i]);
+                states[i] = angular.extend({index: i}, defaultOptions, states[i]);
             }
             return states;
         };
 
         // Get objects used in template
-        $scope.range = angular.isDefined($attrs.ratingStates) ?  this.createRateObjects(angular.copy($scope.$parent.$eval($attrs.ratingStates))): this.createRateObjects(new Array(this.maxRange));
+        $scope.range = angular.isDefined($attrs.ratingStates) ? this.createRateObjects(angular.copy($scope.$parent.$eval($attrs.ratingStates))) : this.createRateObjects(new Array(this.maxRange));
 
-        $scope.rate = function(value) {
-            if ( $scope.value !== value && !$scope.readonly ) {
+        $scope.rate = function (value) {
+            if ($scope.value !== value && !$scope.readonly) {
                 $scope.value = value;
             }
         };
 
-        $scope.enter = function(value) {
-            if ( ! $scope.readonly ) {
+        $scope.enter = function (value) {
+            if (!$scope.readonly) {
                 $scope.val = value;
             }
             $scope.onHover({value: value});
         };
 
-        $scope.reset = function() {
+        $scope.reset = function () {
             $scope.val = angular.copy($scope.value);
             $scope.onLeave();
         };
 
-        $scope.$watch('value', function(value) {
+        $scope.$watch('value', function (value) {
             $scope.val = value;
         });
 
         $scope.readonly = false;
         if ($attrs.readonly) {
-            $scope.$parent.$watch($parse($attrs.readonly), function(value) {
+            $scope.$parent.$watch($parse($attrs.readonly), function (value) {
                 $scope.readonly = !!value;
             });
         }
     }])
 
-    .directive('rating', function() {
+    .directive('rating', function () {
         return {
             restrict: 'EA',
             scope: {
@@ -2292,8 +2305,8 @@ angular.module('mm.foundation.tabs', [])
         var ctrl = this,
             tabs = ctrl.tabs = $scope.tabs = [];
 
-        ctrl.select = function(tab) {
-            angular.forEach(tabs, function(tab) {
+        ctrl.select = function (tab) {
+            angular.forEach(tabs, function (tab) {
                 tab.active = false;
             });
             tab.active = true;
@@ -2348,7 +2361,7 @@ angular.module('mm.foundation.tabs', [])
  </file>
  </example>
  */
-    .directive('tabset', function() {
+    .directive('tabset', function () {
         return {
             restrict: 'EA',
             transclude: true,
@@ -2356,7 +2369,7 @@ angular.module('mm.foundation.tabs', [])
             scope: {},
             controller: 'TabsetController',
             templateUrl: 'template/tabs/tabset.html',
-            link: function(scope, element, attrs) {
+            link: function (scope, element, attrs) {
                 scope.vertical = angular.isDefined(attrs.vertical) ? scope.$parent.$eval(attrs.vertical) : false;
                 scope.justified = angular.isDefined(attrs.justified) ? scope.$parent.$eval(attrs.justified) : false;
                 scope.type = angular.isDefined(attrs.type) ? scope.$parent.$eval(attrs.type) : 'tabs';
@@ -2444,7 +2457,7 @@ angular.module('mm.foundation.tabs', [])
  </file>
  </example>
  */
-    .directive('tab', ['$parse', function($parse) {
+    .directive('tab', ['$parse', function ($parse) {
         return {
             require: '^tabset',
             restrict: 'EA',
@@ -2457,10 +2470,10 @@ angular.module('mm.foundation.tabs', [])
                 //once it inserts the tab's content into the dom
                 onDeselect: '&deselect'
             },
-            controller: function() {
+            controller: function () {
                 //Empty controller so other directives can require being 'under' a tab
             },
-            compile: function(elm, attrs, transclude) {
+            compile: function (elm, attrs, transclude) {
                 return function postLink(scope, elm, attrs, tabsetCtrl) {
                     var getActive, setActive;
                     if (attrs.active) {
@@ -2479,8 +2492,8 @@ angular.module('mm.foundation.tabs', [])
                         setActive = getActive = angular.noop;
                     }
 
-                    scope.$watch('active', function(active) {
-                        if( !angular.isFunction(setActive) ){
+                    scope.$watch('active', function (active) {
+                        if (!angular.isFunction(setActive)) {
                             return;
                         }
                         // Note this watcher also initializes and assigns scope.active to the
@@ -2495,20 +2508,20 @@ angular.module('mm.foundation.tabs', [])
                     });
 
                     scope.disabled = false;
-                    if ( attrs.disabled ) {
-                        scope.$parent.$watch($parse(attrs.disabled), function(value) {
-                            scope.disabled = !! value;
+                    if (attrs.disabled) {
+                        scope.$parent.$watch($parse(attrs.disabled), function (value) {
+                            scope.disabled = !!value;
                         });
                     }
 
-                    scope.select = function() {
-                        if ( ! scope.disabled ) {
+                    scope.select = function () {
+                        if (!scope.disabled) {
                             scope.active = true;
                         }
                     };
 
                     tabsetCtrl.addTab(scope);
-                    scope.$on('$destroy', function() {
+                    scope.$on('$destroy', function () {
                         tabsetCtrl.removeTab(scope);
                     });
 
@@ -2521,11 +2534,11 @@ angular.module('mm.foundation.tabs', [])
         };
     }])
 
-    .directive('tabHeadingTransclude', [function() {
+    .directive('tabHeadingTransclude', [function () {
         return {
             restrict: 'A',
             require: '^tab',
-            link: function(scope, elm, attrs, tabCtrl) {
+            link: function (scope, elm, attrs, tabCtrl) {
                 scope.$watch('headingElement', function updateHeadingElement(heading) {
                     if (heading) {
                         elm.html('');
@@ -2536,17 +2549,17 @@ angular.module('mm.foundation.tabs', [])
         };
     }])
 
-    .directive('tabContentTransclude', function() {
+    .directive('tabContentTransclude', function () {
         return {
             restrict: 'A',
             require: '^tabset',
-            link: function(scope, elm, attrs) {
+            link: function (scope, elm, attrs) {
                 var tab = scope.$eval(attrs.tabContentTransclude);
 
                 //Now our tab is ready to be transcluded: both the tab heading area
                 //and the tab content area are loaded.  Transclude 'em both.
-                tab.$transcludeFn(tab.$parent, function(contents) {
-                    angular.forEach(contents, function(node) {
+                tab.$transcludeFn(tab.$parent, function (contents) {
+                    angular.forEach(contents, function (node) {
                         if (isTabHeading(node)) {
                             //Let tabHeadingTransclude know.
                             tab.headingElement = node;
@@ -2558,7 +2571,7 @@ angular.module('mm.foundation.tabs', [])
             }
         };
         function isTabHeading(node) {
-            return node.tagName &&  (
+            return node.tagName && (
                 node.hasAttribute('tab-heading') ||
                 node.hasAttribute('data-tab-heading') ||
                 node.tagName.toLowerCase() === 'tab-heading' ||
@@ -2570,12 +2583,13 @@ angular.module('mm.foundation.tabs', [])
 ;
 
 angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
-    .factory('closest', [function() {
-        return function(el, selector) {
+    .factory('closest', [function () {
+        return function (el, selector) {
             var matchesSelector = function (node, selector) {
                 var nodes = (node.parentNode || node.document).querySelectorAll(selector);
                 var i = -1;
-                while (nodes[++i] && nodes[i] != node){}
+                while (nodes[++i] && nodes[i] != node) {
+                }
                 return !!nodes[i];
             };
 
@@ -2590,23 +2604,23 @@ angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
             return false;
         };
     }])
-    .directive('topBar', ['$timeout','$compile', '$window', '$document', 'mediaQueries',
-        function($timeout, $compile, $window, $document, mediaQueries) {
+    .directive('topBar', ['$timeout', '$compile', '$window', '$document', 'mediaQueries',
+        function ($timeout, $compile, $window, $document, mediaQueries) {
             return {
                 scope: {
-                    stickyClass : '@',
+                    stickyClass: '@',
                     backText: '@',
-                    stickyOn : '=',
+                    stickyOn: '=',
                     customBackText: '=',
                     isHover: '=',
                     mobileShowParentLink: '=',
-                    scrolltop : '=',
+                    scrolltop: '=',
                 },
                 restrict: 'EA',
                 replace: true,
                 templateUrl: 'template/topbar/top-bar.html',
                 transclude: true,
-                controller: ['$window', '$scope', 'closest', function($window, $scope, closest) {
+                controller: ['$window', '$scope', 'closest', function ($window, $scope, closest) {
                     $scope.settings = {};
                     $scope.settings.stickyClass = $scope.stickyClass || 'sticky';
                     $scope.settings.backText = $scope.backText || 'Back';
@@ -2621,7 +2635,7 @@ angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
 
                     $scope.index = 0;
 
-                    var outerHeight = function(el) {
+                    var outerHeight = function (el) {
                         var height = el.offsetHeight;
                         var style = el.currentStyle || getComputedStyle(el);
 
@@ -2632,11 +2646,11 @@ angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
 
                     var sections = [];
 
-                    this.addSection = function(section) {
+                    this.addSection = function (section) {
                         sections.push(section);
                     };
 
-                    this.removeSection = function(section) {
+                    this.removeSection = function (section) {
                         var index = sections.indexOf(section);
                         if (index > -1) {
                             sections.splice(index, 1);
@@ -2645,15 +2659,15 @@ angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
 
                     var dir = /rtl/i.test($document.find('html').attr('dir')) ? 'right' : 'left';
 
-                    $scope.$watch('index', function(index) {
-                        for(var i = 0; i < sections.length; i++){
+                    $scope.$watch('index', function (index) {
+                        for (var i = 0; i < sections.length; i++) {
                             sections[i].move(dir, index);
                         }
                     });
 
-                    this.toggle = function(on) {
+                    this.toggle = function (on) {
                         $scope.toggle(on);
-                        for(var i = 0; i < sections.length; i++){
+                        for (var i = 0; i < sections.length; i++) {
                             sections[i].reset();
                         }
                         $scope.index = 0;
@@ -2661,29 +2675,29 @@ angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
                         $scope.$apply();
                     };
 
-                    this.back = function(event) {
-                        if($scope.index < 1 || !mediaQueries.topbarBreakpoint()){
+                    this.back = function (event) {
+                        if ($scope.index < 1 || !mediaQueries.topbarBreakpoint()) {
                             return;
                         }
 
                         var $link = angular.element(event.currentTarget);
                         var $movedLi = closest($link, 'li.moved');
                         var $previousLevelUl = $movedLi.parent();
-                        $scope.index = $scope.index -1;
+                        $scope.index = $scope.index - 1;
 
-                        if($scope.index === 0){
+                        if ($scope.index === 0) {
                             $scope.height = '';
                         } else {
                             $scope.height = $scope.originalHeight + outerHeight($previousLevelUl[0]);
                         }
 
-                        $timeout(function() {
+                        $timeout(function () {
                             $movedLi.removeClass('moved');
                         }, 300);
                     };
 
-                    this.forward = function(event) {
-                        if(!mediaQueries.topbarBreakpoint()){
+                    this.forward = function (event) {
+                        if (!mediaQueries.topbarBreakpoint()) {
                             return false;
                         }
 
@@ -2696,13 +2710,13 @@ angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
                     };
 
                 }],
-                link: function(scope, element, attrs) {
+                link: function (scope, element, attrs) {
                     var topbar = scope.topbar = element;
                     var topbarContainer = topbar.parent();
                     var body = angular.element($document[0].querySelector('body'));
                     var lastBreakpoint = mediaQueries.topbarBreakpoint();
 
-                    var isSticky = scope.isSticky = function() {
+                    var isSticky = scope.isSticky = function () {
                         var sticky = topbarContainer.hasClass(scope.settings.stickyClass);
                         if (sticky && scope.settings.stickyOn === 'all') {
                             return true;
@@ -2716,7 +2730,7 @@ angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
                         return false;
                     };
 
-                    var updateStickyPositioning = function() {
+                    var updateStickyPositioning = function () {
                         if (!scope.stickyTopbar || !scope.isSticky()) {
                             return;
                         }
@@ -2732,9 +2746,9 @@ angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
                         }
                     };
 
-                    var onResize = function() {
+                    var onResize = function () {
                         var currentBreakpoint = mediaQueries.topbarBreakpoint();
-                        if(lastBreakpoint === currentBreakpoint){
+                        if (lastBreakpoint === currentBreakpoint) {
                             return;
                         }
                         lastBreakpoint = mediaQueries.topbarBreakpoint();
@@ -2744,20 +2758,20 @@ angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
                         scope.height = '';
 
                         var sections = angular.element(topbar[0].querySelectorAll('section'));
-                        angular.forEach(sections, function(section) {
+                        angular.forEach(sections, function (section) {
                             angular.element(section.querySelectorAll('li.moved')).removeClass('moved');
                         });
 
                         scope.$apply();
                     };
 
-                    var onScroll = function() {
+                    var onScroll = function () {
                         updateStickyPositioning();
                         scope.$apply();
                     };
 
-                    scope.toggle = function(on) {
-                        if(!mediaQueries.topbarBreakpoint()){
+                    scope.toggle = function (on) {
+                        if (!mediaQueries.topbarBreakpoint()) {
                             return false;
                         }
 
@@ -2779,14 +2793,14 @@ angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
                                 topbar.parent().removeClass('fixed');
                                 topbar.addClass('fixed');
                                 body.css('padding-top', '');
-                                $window.scrollTo(0,0);
+                                $window.scrollTo(0, 0);
                             }
                         } else {
-                            if(isSticky()) {
+                            if (isSticky()) {
                                 topbar.parent().addClass('fixed');
                             }
 
-                            if(topbar.parent().hasClass('fixed')) {
+                            if (topbar.parent().hasClass('fixed')) {
                                 if (!expand) {
                                     topbar.removeClass('fixed');
                                     topbar.parent().removeClass('expanded');
@@ -2800,7 +2814,7 @@ angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
                         }
                     };
 
-                    if(topbarContainer.hasClass('fixed') || isSticky() ) {
+                    if (topbarContainer.hasClass('fixed') || isSticky()) {
                         scope.stickyTopbar = true;
                         scope.height = topbarContainer[0].offsetHeight;
                         var stickyoffset = topbarContainer[0].getBoundingClientRect().top + $window.pageYOffset;
@@ -2810,8 +2824,8 @@ angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
 
                     scope.originalHeight = scope.height;
 
-                    scope.$watch('height', function(h) {
-                        if(h){
+                    scope.$watch('height', function (h) {
+                        if (h) {
                             topbar.css('height', h + 'px');
                         } else {
                             topbar.css('height', '');
@@ -2821,7 +2835,7 @@ angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
                     angular.element($window).bind('resize', onResize);
                     angular.element($window).bind('scroll', onScroll);
 
-                    scope.$on('$destroy', function() {
+                    scope.$on('$destroy', function () {
                         angular.element($window).unbind('scroll', onResize);
                         angular.element($window).unbind('resize', onScroll);
                     });
@@ -2841,21 +2855,21 @@ angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
             replace: true,
             templateUrl: 'template/topbar/toggle-top-bar.html',
             transclude: true,
-            link: function(scope, element, attrs, topBar) {
-                element.bind('click', function(event) {
+            link: function (scope, element, attrs, topBar) {
+                element.bind('click', function (event) {
                     var li = closest(angular.element(event.currentTarget), 'li');
-                    if(!li.hasClass('back') && !li.hasClass('has-dropdown')) {
+                    if (!li.hasClass('back') && !li.hasClass('has-dropdown')) {
                         topBar.toggle();
                     }
                 });
 
-                scope.$on('$destroy', function() {
+                scope.$on('$destroy', function () {
                     element.unbind('click');
                 });
             }
         };
     }])
-    .directive('topBarSection', ['$compile', 'closest', function($compile, closest) {
+    .directive('topBarSection', ['$compile', 'closest', function ($compile, closest) {
         return {
             scope: {},
             require: '^topBar',
@@ -2863,15 +2877,15 @@ angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
             replace: true,
             templateUrl: 'template/topbar/top-bar-section.html',
             transclude: true,
-            link: function(scope, element, attrs, topBar) {
+            link: function (scope, element, attrs, topBar) {
                 var section = element;
 
-                scope.reset = function() {
+                scope.reset = function () {
                     angular.element(section[0].querySelectorAll('li.moved')).removeClass('moved');
                 };
 
-                scope.move = function(dir, index) {
-                    if(dir === 'left'){
+                scope.move = function (dir, index) {
+                    if (dir === 'left') {
                         section.css({"left": index * -100 + '%'});
                     }
                     else {
@@ -2881,24 +2895,24 @@ angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
 
                 topBar.addSection(scope);
 
-                scope.$on("$destroy", function() {
+                scope.$on("$destroy", function () {
                     topBar.removeSection(scope);
                 });
 
                 // Top level links close menu on click
                 var links = section[0].querySelectorAll('li>a');
-                angular.forEach(links, function(link) {
+                angular.forEach(links, function (link) {
                     var $link = angular.element(link);
                     var li = closest($link, 'li');
                     if (li.hasClass('has-dropdown') || li.hasClass('back') || li.hasClass('title')) {
                         return;
                     }
 
-                    $link.bind('click', function() {
+                    $link.bind('click', function () {
                         topBar.toggle(false);
                     });
 
-                    scope.$on('$destroy', function() {
+                    scope.$on('$destroy', function () {
                         $link.bind('click');
                     });
                 });
@@ -2913,45 +2927,45 @@ angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
             templateUrl: 'template/topbar/has-dropdown.html',
             replace: true,
             transclude: true,
-            link: function(scope, element, attrs, topBar) {
+            link: function (scope, element, attrs, topBar) {
                 scope.triggerLink = element.children('a')[0];
 
                 var $link = angular.element(scope.triggerLink);
 
-                $link.bind('click', function(event) {
+                $link.bind('click', function (event) {
                     topBar.forward(event);
                 });
-                scope.$on('$destroy', function() {
+                scope.$on('$destroy', function () {
                     $link.unbind('click');
                 });
 
-                element.bind('mouseenter', function() {
-                    if(topBar.settings.isHover && !mediaQueries.topbarBreakpoint()){
+                element.bind('mouseenter', function () {
+                    if (topBar.settings.isHover && !mediaQueries.topbarBreakpoint()) {
                         element.addClass('not-click');
                     }
                 });
-                element.bind('click', function(event) {
-                    if(!topBar.settings.isHover && !mediaQueries.topbarBreakpoint()){
+                element.bind('click', function (event) {
+                    if (!topBar.settings.isHover && !mediaQueries.topbarBreakpoint()) {
                         element.toggleClass('not-click');
                     }
                 });
 
-                element.bind('mouseleave', function() {
+                element.bind('mouseleave', function () {
                     element.removeClass('not-click');
                 });
 
-                scope.$on('$destroy', function() {
+                scope.$on('$destroy', function () {
                     element.unbind('click');
                     element.unbind('mouseenter');
                     element.unbind('mouseleave');
                 });
             },
-            controller: ['$window', '$scope', function($window, $scope) {
+            controller: ['$window', '$scope', function ($window, $scope) {
                 this.triggerLink = $scope.triggerLink;
             }]
         };
     }])
-    .directive('topBarDropdown', ['$compile', function($compile) {
+    .directive('topBarDropdown', ['$compile', function ($compile) {
         return {
             scope: {},
             require: ['^topBar', '^hasDropdown'],
@@ -2959,7 +2973,7 @@ angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
             replace: true,
             templateUrl: 'template/topbar/top-bar-dropdown.html',
             transclude: true,
-            link: function(scope, element, attrs, ctrls) {
+            link: function (scope, element, attrs, ctrls) {
                 var topBar = ctrls[0];
                 var hasDropdown = ctrls[1];
                 var $link = angular.element(hasDropdown.triggerLink);
@@ -2968,7 +2982,7 @@ angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
 
                 scope.linkText = $link.text();
 
-                scope.back = function(event) {
+                scope.back = function (event) {
                     topBar.back(event);
                 };
 
@@ -2995,17 +3009,17 @@ angular.module("mm.foundation.topbar", ['mm.foundation.mediaQueries'])
         };
     }]);
 
-angular.module( 'mm.foundation.tour', [ 'mm.foundation.position', 'mm.foundation.tooltip' ] )
+angular.module('mm.foundation.tour', ['mm.foundation.position', 'mm.foundation.tooltip'])
 
-    .service( '$tour', [ '$window', function ( $window ) {
+    .service('$tour', ['$window', function ($window) {
         var currentIndex = getStoredCurrentStep();
         var ended = false;
         var steps = {};
 
         function getStoredCurrentStep() {
             try {
-                return parseInt( $window.localStorage.getItem( 'mm.tour.step' ), 10 );
-            } catch(e) {
+                return parseInt($window.localStorage.getItem('mm.tour.step'), 10);
+            } catch (e) {
                 if (e.name !== "SecurityError") {
                     throw e;
                 }
@@ -3014,8 +3028,8 @@ angular.module( 'mm.foundation.tour', [ 'mm.foundation.position', 'mm.foundation
 
         function storeCurrentStep() {
             try {
-                $window.localStorage.setItem( 'mm.tour.step', currentIndex );
-            } catch(e) {
+                $window.localStorage.setItem('mm.tour.step', currentIndex);
+            } catch (e) {
                 if (e.name !== "SecurityError") {
                     throw e;
                 }
@@ -3027,48 +3041,48 @@ angular.module( 'mm.foundation.tour', [ 'mm.foundation.position', 'mm.foundation
             storeCurrentStep();
         }
 
-        this.add = function ( index, attrs ) {
-            steps[ index ] = attrs;
+        this.add = function (index, attrs) {
+            steps[index] = attrs;
         };
 
-        this.has = function ( index ) {
-            return !!steps[ index ];
+        this.has = function (index) {
+            return !!steps[index];
         };
 
         this.isActive = function () {
             return currentIndex > 0;
         };
 
-        this.current = function ( index ) {
-            if ( index ) {
-                setCurrentStep( currentIndex );
+        this.current = function (index) {
+            if (index) {
+                setCurrentStep(currentIndex);
             } else {
                 return currentIndex;
             }
         };
 
         this.start = function () {
-            setCurrentStep( 1 );
+            setCurrentStep(1);
         };
 
         this.next = function () {
-            setCurrentStep( currentIndex + 1 );
+            setCurrentStep(currentIndex + 1);
         };
 
         this.end = function () {
-            setCurrentStep( 0 );
+            setCurrentStep(0);
         };
     }])
 
-    .directive( 'stepTextPopup', ['$tour', function ( $tour ) {
+    .directive('stepTextPopup', ['$tour', function ($tour) {
         return {
             restrict: 'EA',
             replace: true,
-            scope: { title: '@', content: '@', placement: '@', animation: '&', isOpen: '&' },
+            scope: {title: '@', content: '@', placement: '@', animation: '&', isOpen: '&'},
             templateUrl: 'template/tour/tour.html',
             link: function (scope, element) {
                 scope.isLastStep = function () {
-                    return !$tour.has( $tour.current() + 1 );
+                    return !$tour.has($tour.current() + 1);
                 };
 
                 scope.endTour = function () {
@@ -3086,8 +3100,8 @@ angular.module( 'mm.foundation.tour', [ 'mm.foundation.position', 'mm.foundation
         };
     }])
 
-    .directive( 'stepText', [ '$position', '$tooltip', '$tour', '$window', function ( $position, $tooltip, $tour, $window ) {
-        function isElementInViewport( element ) {
+    .directive('stepText', ['$position', '$tooltip', '$tour', '$window', function ($position, $tooltip, $tour, $window) {
+        function isElementInViewport(element) {
             var rect = element[0].getBoundingClientRect();
 
             return (
@@ -3098,16 +3112,16 @@ angular.module( 'mm.foundation.tour', [ 'mm.foundation.position', 'mm.foundation
             );
         }
 
-        function show( scope, element, attrs ) {
-            var index = parseInt( attrs.stepIndex, 10);
+        function show(scope, element, attrs) {
+            var index = parseInt(attrs.stepIndex, 10);
 
-            if ( $tour.isActive() && index ) {
-                $tour.add( index, attrs );
+            if ($tour.isActive() && index) {
+                $tour.add(index, attrs);
 
-                if ( index === $tour.current() ) {
-                    if ( !isElementInViewport( element ) ) {
-                        var offset = $position.offset( element );
-                        $window.scrollTo( 0, offset.top - $window.innerHeight / 2 );
+                if (index === $tour.current()) {
+                    if (!isElementInViewport(element)) {
+                        var offset = $position.offset(element);
+                        $window.scrollTo(0, offset.top - $window.innerHeight / 2);
                     }
 
                     return true;
@@ -3117,7 +3131,7 @@ angular.module( 'mm.foundation.tour', [ 'mm.foundation.position', 'mm.foundation
             return false;
         }
 
-        return $tooltip( 'stepText', 'step', show );
+        return $tooltip('stepText', 'step', show);
     }]);
 
 angular.module('mm.foundation.typeahead', ['mm.foundation.position', 'mm.foundation.bindHtml'])
@@ -3132,7 +3146,7 @@ angular.module('mm.foundation.typeahead', ['mm.foundation.position', 'mm.foundat
         var TYPEAHEAD_REGEXP = /^\s*(.*?)(?:\s+as\s+(.*?))?\s+for\s+(?:([\$\w][\$\w\d]*))\s+in\s+(.*)$/;
 
         return {
-            parse:function (input) {
+            parse: function (input) {
 
                 var match = input.match(TYPEAHEAD_REGEXP);
                 if (!match) {
@@ -3142,10 +3156,10 @@ angular.module('mm.foundation.typeahead', ['mm.foundation.position', 'mm.foundat
                 }
 
                 return {
-                    itemName:match[3],
-                    source:$parse(match[4]),
-                    viewMapper:$parse(match[2] || match[1]),
-                    modelMapper:$parse(match[1])
+                    itemName: match[3],
+                    source: $parse(match[4]),
+                    viewMapper: $parse(match[2] || match[1]),
+                    modelMapper: $parse(match[1])
                 };
             }
         };
@@ -3157,8 +3171,8 @@ angular.module('mm.foundation.typeahead', ['mm.foundation.position', 'mm.foundat
             var HOT_KEYS = [9, 13, 27, 38, 40];
 
             return {
-                require:'ngModel',
-                link:function (originalScope, element, attrs, modelCtrl) {
+                require: 'ngModel',
+                link: function (originalScope, element, attrs, modelCtrl) {
 
                     //SUPPORTED ATTRIBUTES (OPTIONS)
 
@@ -3179,7 +3193,7 @@ angular.module('mm.foundation.typeahead', ['mm.foundation.position', 'mm.foundat
 
                     var inputFormatter = attrs.typeaheadInputFormatter ? $parse(attrs.typeaheadInputFormatter) : undefined;
 
-                    var appendToBody =  attrs.typeaheadAppendToBody ? $parse(attrs.typeaheadAppendToBody) : false;
+                    var appendToBody = attrs.typeaheadAppendToBody ? $parse(attrs.typeaheadAppendToBody) : false;
 
                     //INTERNAL VARIABLES
 
@@ -3208,20 +3222,20 @@ angular.module('mm.foundation.typeahead', ['mm.foundation.position', 'mm.foundat
                     //create a child scope for the typeahead directive so we are not polluting original scope
                     //with typeahead-specific data (matches, query etc.)
                     var scope = originalScope.$new();
-                    originalScope.$on('$destroy', function(){
+                    originalScope.$on('$destroy', function () {
                         scope.$destroy();
                     });
 
-                    var resetMatches = function() {
+                    var resetMatches = function () {
                         scope.matches = [];
                         scope.activeIdx = -1;
                     };
 
-                    var getMatchesAsync = function(inputValue) {
+                    var getMatchesAsync = function (inputValue) {
 
                         var locals = {$viewValue: inputValue};
                         isLoadingSetter(originalScope, true);
-                        $q.when(parserResult.source(originalScope, locals)).then(function(matches) {
+                        $q.when(parserResult.source(originalScope, locals)).then(function (matches) {
 
                             //it might happen that several async queries were in progress if a user were typing fast
                             //but we are interested only in responses that correspond to the current view value
@@ -3232,7 +3246,7 @@ angular.module('mm.foundation.typeahead', ['mm.foundation.position', 'mm.foundat
                                     scope.matches.length = 0;
 
                                     //transform labels
-                                    for(var i=0; i<matches.length; i++) {
+                                    for (var i = 0; i < matches.length; i++) {
                                         locals[parserResult.itemName] = matches[i];
                                         scope.matches.push({
                                             label: parserResult.viewMapper(scope, locals),
@@ -3252,7 +3266,7 @@ angular.module('mm.foundation.typeahead', ['mm.foundation.position', 'mm.foundat
                                 }
                                 isLoadingSetter(originalScope, false);
                             }
-                        }, function(){
+                        }, function () {
                             resetMatches();
                             isLoadingSetter(originalScope, false);
                         });
@@ -3319,7 +3333,7 @@ angular.module('mm.foundation.typeahead', ['mm.foundation.position', 'mm.foundat
                             locals[parserResult.itemName] = undefined;
                             emptyViewValue = parserResult.viewMapper(originalScope, locals);
 
-                            return candidateViewValue!== emptyViewValue ? candidateViewValue : modelValue;
+                            return candidateViewValue !== emptyViewValue ? candidateViewValue : modelValue;
                         }
                     });
 
@@ -3394,12 +3408,12 @@ angular.module('mm.foundation.typeahead', ['mm.foundation.position', 'mm.foundat
 
                     $document.bind('click', dismissClickHandler);
 
-                    originalScope.$on('$destroy', function(){
+                    originalScope.$on('$destroy', function () {
                         $document.unbind('click', dismissClickHandler);
                     });
 
                     var $popup = $compile(popUpEl)(scope);
-                    if ( appendToBody ) {
+                    if (appendToBody) {
                         $document.find('body').append($popup);
                     } else {
                         element.after($popup);
@@ -3411,17 +3425,17 @@ angular.module('mm.foundation.typeahead', ['mm.foundation.position', 'mm.foundat
 
     .directive('typeaheadPopup', function () {
         return {
-            restrict:'EA',
-            scope:{
-                matches:'=',
-                query:'=',
-                active:'=',
-                position:'=',
-                select:'&'
+            restrict: 'EA',
+            scope: {
+                matches: '=',
+                query: '=',
+                active: '=',
+                position: '=',
+                select: '&'
             },
-            replace:true,
-            templateUrl:'template/typeahead/typeahead-popup.html',
-            link:function (scope, element, attrs) {
+            replace: true,
+            templateUrl: 'template/typeahead/typeahead-popup.html',
+            link: function (scope, element, attrs) {
 
                 scope.templateUrl = attrs.templateUrl;
 
@@ -3438,7 +3452,7 @@ angular.module('mm.foundation.typeahead', ['mm.foundation.position', 'mm.foundat
                 };
 
                 scope.selectMatch = function (activeIdx) {
-                    scope.select({activeIdx:activeIdx});
+                    scope.select({activeIdx: activeIdx});
                 };
             }
         };
@@ -3446,33 +3460,33 @@ angular.module('mm.foundation.typeahead', ['mm.foundation.position', 'mm.foundat
 
     .directive('typeaheadMatch', ['$http', '$templateCache', '$compile', '$parse', function ($http, $templateCache, $compile, $parse) {
         return {
-            restrict:'EA',
-            scope:{
-                index:'=',
-                match:'=',
-                query:'='
+            restrict: 'EA',
+            scope: {
+                index: '=',
+                match: '=',
+                query: '='
             },
-            link:function (scope, element, attrs) {
+            link: function (scope, element, attrs) {
                 var tplUrl = $parse(attrs.templateUrl)(scope.$parent) || 'template/typeahead/typeahead-match.html';
-                $http.get(tplUrl, {cache: $templateCache}).success(function(tplContent){
+                $http.get(tplUrl, {cache: $templateCache}).success(function (tplContent) {
                     element.replaceWith($compile(tplContent.trim())(scope));
                 });
             }
         };
     }])
 
-    .filter('typeaheadHighlight', function() {
+    .filter('typeaheadHighlight', function () {
 
         function escapeRegexp(queryToEscape) {
             return queryToEscape.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
         }
 
-        return function(matchItem, query) {
+        return function (matchItem, query) {
             return query ? matchItem.replace(new RegExp(escapeRegexp(query), 'gi'), '<strong>$&</strong>') : matchItem;
         };
     });
 
-angular.module("template/accordion/accordion-group.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/accordion/accordion-group.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/accordion/accordion-group.html",
         "<dd>\n" +
         "    <a ng-click=\"isOpen = !isOpen\" ng-class=\"{ active: isOpen }\"  accordion-transclude=\"heading\">{{heading}}</a>\n" +
@@ -3484,13 +3498,13 @@ angular.module("template/accordion/accordion-group.html", []).run(["$templateCac
         "");
 }]);
 
-angular.module("template/accordion/accordion.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/accordion/accordion.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/accordion/accordion.html",
         "<dl class=\"accordion\" ng-transclude></dl>\n" +
         "");
 }]);
 
-angular.module("template/alert/alert.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/alert/alert.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/alert/alert.html",
         "<div class='alert-box' ng-class='(type || \"\")'>\n" +
         "  <span ng-transclude></span>\n" +
@@ -3499,13 +3513,13 @@ angular.module("template/alert/alert.html", []).run(["$templateCache", function(
         "");
 }]);
 
-angular.module("template/modal/backdrop.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/modal/backdrop.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/modal/backdrop.html",
         "<div class=\"reveal-modal-bg fade\" ng-class=\"{in: animate}\" ng-click=\"close($event)\" style=\"display: block\"></div>\n" +
         "");
 }]);
 
-angular.module("template/modal/window.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/modal/window.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/modal/window.html",
         "<div tabindex=\"-1\" class=\"reveal-modal fade {{ windowClass }}\"\n" +
         "  ng-class=\"{in: animate}\" style=\"display: block; visibility: visible\">\n" +
@@ -3514,7 +3528,7 @@ angular.module("template/modal/window.html", []).run(["$templateCache", function
         "");
 }]);
 
-angular.module("template/pagination/pager.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/pagination/pager.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/pagination/pager.html",
         "<ul class=\"pagination\">\n" +
         "  <li ng-repeat=\"page in pages\" class=\"arrow\" ng-class=\"{unavailable: page.disabled, left: page.previous, right: page.next}\"><a ng-click=\"selectPage(page.number)\">{{page.text}}</a></li>\n" +
@@ -3522,7 +3536,7 @@ angular.module("template/pagination/pager.html", []).run(["$templateCache", func
         "");
 }]);
 
-angular.module("template/pagination/pagination.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/pagination/pagination.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/pagination/pagination.html",
         "<ul class=\"pagination\">\n" +
         "  <li ng-repeat=\"page in pages\" ng-class=\"{arrow: $first || $last, current: page.active, unavailable: page.disabled}\"><a ng-click=\"selectPage(page.number)\">{{page.text}}</a></li>\n" +
@@ -3530,7 +3544,7 @@ angular.module("template/pagination/pagination.html", []).run(["$templateCache",
         "");
 }]);
 
-angular.module("template/tooltip/tooltip-html-unsafe-popup.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/tooltip/tooltip-html-unsafe-popup.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/tooltip/tooltip-html-unsafe-popup.html",
         "<span class=\"tooltip tip-{{placement}}\"\n" +
         "  ng-class=\"{ in: isOpen(), fade: animation() }\"\n" +
@@ -3541,7 +3555,7 @@ angular.module("template/tooltip/tooltip-html-unsafe-popup.html", []).run(["$tem
         "");
 }]);
 
-angular.module("template/tooltip/tooltip-popup.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/tooltip/tooltip-popup.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/tooltip/tooltip-popup.html",
         "<span class=\"tooltip tip-{{placement}}\"\n" +
         "  ng-class=\"{ in: isOpen(), fade: animation() }\"\n" +
@@ -3552,7 +3566,7 @@ angular.module("template/tooltip/tooltip-popup.html", []).run(["$templateCache",
         "");
 }]);
 
-angular.module("template/popover/popover.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/popover/popover.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/popover/popover.html",
         "<div class=\"joyride-tip-guide\" ng-class=\"{ in: isOpen(), fade: animation() }\">\n" +
         "  <span class=\"joyride-nub\" ng-class=\"{\n" +
@@ -3569,19 +3583,19 @@ angular.module("template/popover/popover.html", []).run(["$templateCache", funct
         "");
 }]);
 
-angular.module("template/progressbar/bar.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/progressbar/bar.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/progressbar/bar.html",
         "<span class=\"meter\" ng-transclude></span>\n" +
         "");
 }]);
 
-angular.module("template/progressbar/progress.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/progressbar/progress.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/progressbar/progress.html",
         "<div class=\"progress\" ng-class=\"type\" ng-transclude></div>\n" +
         "");
 }]);
 
-angular.module("template/progressbar/progressbar.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/progressbar/progressbar.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/progressbar/progressbar.html",
         "<div class=\"progress\" ng-class=\"type\">\n" +
         "  <span class=\"meter\" ng-transclude></span>\n" +
@@ -3589,7 +3603,7 @@ angular.module("template/progressbar/progressbar.html", []).run(["$templateCache
         "");
 }]);
 
-angular.module("template/rating/rating.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/rating/rating.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/rating/rating.html",
         "<span ng-mouseleave=\"reset()\">\n" +
         "  <i ng-repeat=\"r in range\" ng-mouseenter=\"enter($index + 1)\" ng-click=\"rate($index + 1)\" class=\"fa\"\n" +
@@ -3598,7 +3612,7 @@ angular.module("template/rating/rating.html", []).run(["$templateCache", functio
         "");
 }]);
 
-angular.module("template/tabs/tab.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/tabs/tab.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/tabs/tab.html",
         "<dd ng-class=\"{active: active}\">\n" +
         "  <a ng-click=\"select()\" tab-heading-transclude>{{heading}}</a>\n" +
@@ -3606,7 +3620,7 @@ angular.module("template/tabs/tab.html", []).run(["$templateCache", function($te
         "");
 }]);
 
-angular.module("template/tabs/tabset.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/tabs/tabset.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/tabs/tabset.html",
         "<div class=\"tabbable\">\n" +
         "  <dl class=\"tabs\" ng-class=\"{'vertical': vertical}\" ng-transclude></dl>\n" +
@@ -3621,32 +3635,32 @@ angular.module("template/tabs/tabset.html", []).run(["$templateCache", function(
         "");
 }]);
 
-angular.module("template/topbar/has-dropdown.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/topbar/has-dropdown.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/topbar/has-dropdown.html",
         "<li class=\"has-dropdown\" ng-transclude></li>");
 }]);
 
-angular.module("template/topbar/toggle-top-bar.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/topbar/toggle-top-bar.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/topbar/toggle-top-bar.html",
         "<li class=\"toggle-topbar menu-icon\" ng-transclude></li>");
 }]);
 
-angular.module("template/topbar/top-bar-dropdown.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/topbar/top-bar-dropdown.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/topbar/top-bar-dropdown.html",
         "<ul class=\"dropdown\" ng-transclude></ul>");
 }]);
 
-angular.module("template/topbar/top-bar-section.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/topbar/top-bar-section.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/topbar/top-bar-section.html",
         "<section class=\"top-bar-section\" ng-transclude></section>");
 }]);
 
-angular.module("template/topbar/top-bar.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/topbar/top-bar.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/topbar/top-bar.html",
         "<nav class=\"top-bar\" ng-transclude></nav>");
 }]);
 
-angular.module("template/tour/tour.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/tour/tour.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/tour/tour.html",
         "<div class=\"joyride-tip-guide\" ng-class=\"{ in: isOpen(), fade: animation() }\">\n" +
         "  <span class=\"joyride-nub\" ng-class=\"{\n" +
@@ -3666,12 +3680,12 @@ angular.module("template/tour/tour.html", []).run(["$templateCache", function($t
         "");
 }]);
 
-angular.module("template/typeahead/typeahead-match.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/typeahead/typeahead-match.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/typeahead/typeahead-match.html",
         "<a tabindex=\"-1\" bind-html-unsafe=\"match.label | typeaheadHighlight:query\"></a>");
 }]);
 
-angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCache", function($templateCache) {
+angular.module("template/typeahead/typeahead-popup.html", []).run(["$templateCache", function ($templateCache) {
     $templateCache.put("template/typeahead/typeahead-popup.html",
         "<ul class=\"f-dropdown\" ng-style=\"{display: isOpen()&&'block' || 'none', top: position.top+'px', left: position.left+'px'}\">\n" +
         "    <li ng-repeat=\"match in matches\" ng-class=\"{active: isActive($index) }\" ng-mouseenter=\"selectActive($index)\" ng-click=\"selectMatch($index)\">\n" +
