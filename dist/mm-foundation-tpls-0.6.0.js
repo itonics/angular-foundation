@@ -1811,7 +1811,7 @@ angular.module('mm.foundation.tooltip', ['mm.foundation.position', 'mm.foundatio
                                     // Customized for LEB : added two new tooltip placement positions
                                     case 'top_center':
                                         ttPosition = {
-                                            top: position.top - ttHeight - 10,
+                                            top: position.top - ttHeight - 20,
                                             left: position.left + position.width / 2 - ttWidth / 2
                                         };
                                         break;
