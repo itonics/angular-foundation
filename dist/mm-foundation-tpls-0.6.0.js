@@ -87,7 +87,7 @@ angular.module('mm.foundation.accordion', [])
                 var accordSlideAnimDuration = 600;
 
                 accordAnchor.click(function () {
-                    if (accordAnchor.hasClass('active')) {
+                    if (!accordAnchor.hasClass('active')) {
                         accordContH = accordContent.outerHeight();
                         accordSlideAnimDuration = (accordContH > 300) ? 650 : accordSlideAnimDuration;
                         accordSlideAnimDuration = (accordContH > 500) ? 700 : accordSlideAnimDuration;
@@ -129,7 +129,7 @@ angular.module('mm.foundation.accordion', [])
                     }
 
                     scope.$parent.$watch(getIsOpen, function (value) {
-                        scope.isOpen = !!value;
+                        scope.isOpen = (value == true || value === 'true');
                     });
                 }
 
