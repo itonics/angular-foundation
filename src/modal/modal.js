@@ -228,6 +228,10 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
           keyboard: modal.keyboard,
           parent: modal.parent
         };
+        // Added for Lebowski.. Closes other modals if this option is set.
+        if(modal.closeOthers){
+          $modalStack.dismissAll("closeOthers");
+        }
         openedWindows.add(modalInstance, modalInstance.options);
 
         var parent = $document.find(modal.parent).eq(0),
@@ -393,6 +397,7 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
                 content: tplAndVars[0],
                 backdrop: modalOptions.backdrop,
                 keyboard: modalOptions.keyboard,
+                closeOthers: modalOptions.closeOthers,
                 windowClass: modalOptions.windowClass,
                 parent: modalOptions.parent || 'body'
               });
