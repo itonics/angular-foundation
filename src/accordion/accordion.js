@@ -119,7 +119,7 @@ angular.module('mm.foundation.accordion', [])
         }
 
         scope.$parent.$watch(getIsOpen, function(value) {
-          scope.isOpen = (value == true || value === 'true');
+          scope.isOpen = (value === true || value === 'true');
         });
       }
 
