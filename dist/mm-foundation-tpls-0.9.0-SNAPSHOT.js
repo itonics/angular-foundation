@@ -910,10 +910,10 @@ angular.module('mm.foundation.transition', [])
 
 angular.module('mm.foundation.modal', ['mm.foundation.transition'])
 
-/**
- * A helper, internal data structure that acts as a map but also allows getting / removing
- * elements in the LIFO order
- */
+  /**
+   * A helper, internal data structure that acts as a map but also allows getting / removing
+   * elements in the LIFO order
+   */
   .factory('$$stackedMap', function () {
     return {
       createNew: function () {
@@ -933,7 +933,7 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
               }
             }
           },
-          keys: function() {
+          keys: function () {
             var keys = [];
             for (var i = 0; i < stack.length; i++) {
               keys.push(stack[i].key);
@@ -964,15 +964,15 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
     };
   })
 
-/**
- * A helper directive for the $modal service. It creates a backdrop element.
- */
+  /**
+   * A helper directive for the $modal service. It creates a backdrop element.
+   */
   .directive('modalBackdrop', ['$modalStack', '$timeout', function ($modalStack, $timeout) {
     return {
       restrict: 'EA',
       replace: true,
       templateUrl: 'template/modal/backdrop.html',
-      link: function (scope) {
+      link: function (scope, element) {
 
         scope.animate = false;
 
@@ -980,6 +980,9 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
         $timeout(function () {
           scope.animate = true;
         });
+
+        // Lebowski:: mapping backdrop to its modal window
+        element.addClass($modalStack.getTop().value.windowClass + "Backdrop").attr('data-modal-window-class', $modalStack.getTop().value.windowClass);
 
         scope.close = function (evt) {
           var modal = $modalStack.getTop();
@@ -1014,8 +1017,8 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
           if (element[0].querySelectorAll('[autofocus]').length > 0) {
             element[0].querySelectorAll('[autofocus]')[0].focus();
           }
-          else{
-          // otherwise focus the freshly-opened modal
+          else {
+            // otherwise focus the freshly-opened modal
             element[0].focus();
           }
         });
@@ -1043,7 +1046,7 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
         return topBackdropIndex;
       }
 
-      $rootScope.$watch(backdropIndex, function(newBackdropIndex){
+      $rootScope.$watch(backdropIndex, function (newBackdropIndex) {
         if (backdropScope) {
           backdropScope.index = newBackdropIndex;
         }
@@ -1057,7 +1060,7 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
         openedWindows.remove(modalInstance);
 
         //remove window DOM element
-        removeAfterAnimate(modalWindow.modalDomEl, modalWindow.modalScope, 300, function() {
+        removeAfterAnimate(modalWindow.modalDomEl, modalWindow.modalScope, 300, function () {
           modalWindow.modalScope.$destroy();
           parent.toggleClass(OPENED_MODAL_CLASS, openedWindows.length() > 0);
           checkRemoveBackdrop();
@@ -1065,16 +1068,16 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
       }
 
       function checkRemoveBackdrop() {
-          //remove backdrop if no longer needed
-          if (backdropDomEl && backdropIndex() == -1) {
-            var backdropScopeRef = backdropScope;
-            removeAfterAnimate(backdropDomEl, backdropScope, 150, function () {
-              backdropScopeRef.$destroy();
-              backdropScopeRef = null;
-            });
-            backdropDomEl = undefined;
-            backdropScope = undefined;
-          }
+        //remove backdrop if no longer needed
+        if (backdropDomEl && backdropIndex() == -1) {
+          var backdropScopeRef = backdropScope;
+          removeAfterAnimate(backdropDomEl, backdropScope, 150, function () {
+            backdropScopeRef.$destroy();
+            backdropScopeRef = null;
+          });
+          backdropDomEl = undefined;
+          backdropScope = undefined;
+        }
       }
 
       function removeAfterAnimate(domEl, scope, emulateTime, done) {
@@ -1101,7 +1104,13 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
             return;
           }
           afterAnimating.done = true;
-
+          // Lebowski:: remove own backdrop
+          // data-modal-window-class
+          var backdropEl = angular.element('[data-modal-window-class=' + domEl.attr('window-class') + ']');
+          if (backdropEl.length) {
+            removeAfterAnimate(backdropEl, backdropEl.scope(), 150, function () {
+            });
+          }
           domEl.remove();
           if (done) {
             done();
@@ -1138,10 +1147,14 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
           keyboard: modal.keyboard,
           parent: modal.parent
         };
+        // Added for Lebowski.. Closes other modals if this option is set.
+        if (modal.closeOthers) {
+          $modalStack.dismissAll("closeOthers");
+        }
         openedWindows.add(modalInstance, modalInstance.options);
 
         var parent = $document.find(modal.parent).eq(0),
-            currBackdropIndex = backdropIndex();
+          currBackdropIndex = backdropIndex();
 
         if (currBackdropIndex >= 0 && !backdropDomEl) {
           backdropScope = $rootScope.$new(true);
@@ -1158,7 +1171,7 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
         var openAt = calculateModalTop(faux, cssTop);
         faux.remove();
 
-        var angularDomEl = angular.element('<div modal-window style="visibility: visible; top:' + openAt +'px;"></div>')
+        var angularDomEl = angular.element('<div modal-window style="visibility: visible; top:' + openAt + 'px;"></div>')
           .attr({
             'window-class': modal.windowClass,
             'index': openedWindows.length() - 1,
@@ -1303,6 +1316,7 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
                 content: tplAndVars[0],
                 backdrop: modalOptions.backdrop,
                 keyboard: modalOptions.keyboard,
+                closeOthers: modalOptions.closeOthers,
                 windowClass: modalOptions.windowClass,
                 parent: modalOptions.parent || 'body'
               });
