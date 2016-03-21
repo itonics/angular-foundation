@@ -1169,7 +1169,7 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
         if (1 || currBackdropIndex >= 0 && !backdropDomEl) {
           backdropScope = $rootScope.$new(true);
           backdropScope.index = currBackdropIndex;
-          backdropScopes[modal.windowClass] = {index: currBackdropIndex};
+          backdropScopes[modal.windowClass] = backdropScope;
           backdropDomEl = $compile('<div modal-backdrop></div>')(backdropScopes[modal.windowClass]);
           parent.append(backdropDomEl);
         }
