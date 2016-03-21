@@ -122,6 +122,7 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
       var OPENED_MODAL_CLASS = 'modal-open';
 
       var backdropDomEl, backdropScope, cssTop;
+      var backdropScopes = [];
       var openedWindows = $$stackedMap.createNew();
       var $modalStack = {};
 
@@ -200,9 +201,10 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
           afterAnimating.done = true;
           // Lebowski:: remove own backdrop
           // data-modal-window-class
-          var backdropEl = angular.element('[data-modal-window-class=' + domEl.attr('window-class') + ']');
+          var windowClass = domEl.attr('window-class');
+          var backdropEl = angular.element('[data-modal-window-class=' + windowClass + ']');
           if (backdropEl.length) {
-            removeAfterAnimate(backdropEl, backdropEl.scope(), 150, function () {
+            removeAfterAnimate(backdropEl, backdropScopes[windowClass], 150, function () {
             });
           }
           domEl.remove();
@@ -257,7 +259,8 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
         if (1 || currBackdropIndex >= 0 && !backdropDomEl) {
           backdropScope = $rootScope.$new(true);
           backdropScope.index = currBackdropIndex;
-          backdropDomEl = $compile('<div modal-backdrop></div>')(backdropScope);
+          backdropScopes[modal.windowClass] = {index: currBackdropIndex};
+          backdropDomEl = $compile('<div modal-backdrop></div>')(backdropScopes[modal.windowClass]);
           parent.append(backdropDomEl);
         }
 
