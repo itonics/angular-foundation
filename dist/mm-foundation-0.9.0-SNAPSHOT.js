@@ -1081,7 +1081,9 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
 
       function removeAfterAnimate(domEl, scope, emulateTime, done) {
         // Closing animation
-        scope.animate = false;
+        if(scope){
+          scope.animate = false;
+        }
 
         var transitionEndEventName = $transition.transitionEndEventName;
         if (transitionEndEventName) {
@@ -1091,7 +1093,9 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
           domEl.bind(transitionEndEventName, function () {
             $timeout.cancel(timeout);
             afterAnimating();
-            scope.$apply();
+            if(scope){
+              scope.$apply();
+            }
           });
         } else {
           // Ensure this call is async
