@@ -1140,23 +1140,27 @@ angular.module('mm.foundation.modal', ['mm.foundation.transition'])
       });
 
       $modalStack.open = function (modalInstance, modal) {
+        // Added for Lebowski.. Closes other modals if this option is set.
+        if (modal.closeOthers) {
+          $modalStack.dismissAll("closeOthers");
+        }
+
         modalInstance.options = {
           deferred: modal.deferred,
           modalScope: modal.scope,
           backdrop: modal.backdrop,
           keyboard: modal.keyboard,
+          windowClass: modal.windowClass,
+          closeOthers: modal.closeOthers,
           parent: modal.parent
         };
-        // Added for Lebowski.. Closes other modals if this option is set.
-        if (modal.closeOthers) {
-          $modalStack.dismissAll("closeOthers");
-        }
+
         openedWindows.add(modalInstance, modalInstance.options);
 
         var parent = $document.find(modal.parent).eq(0),
           currBackdropIndex = backdropIndex();
 
-        if (currBackdropIndex >= 0 && !backdropDomEl) {
+        if (1 || currBackdropIndex >= 0 && !backdropDomEl) {
           backdropScope = $rootScope.$new(true);
           backdropScope.index = currBackdropIndex;
           backdropDomEl = $compile('<div modal-backdrop></div>')(backdropScope);
