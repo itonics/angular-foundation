@@ -20,7 +20,7 @@ angular.module('mm.foundation.accordion', [])
       });
     }
   };
-  
+
   // This is called from the accordion-group directive to add itself to the accordion
   this.addGroup = function(groupScope) {
     var that = this;
@@ -76,7 +76,7 @@ angular.module('mm.foundation.accordion', [])
       var accordSlideAnimEasing = "easeInOutCubic";
       var accordSlideAnimDuration = 600;
 
-      accordAnchor.click(function(){
+      function animate() {
         if(!accordAnchor.hasClass('active')){
           accordContH = accordContent.outerHeight();
           accordSlideAnimDuration = (accordContH > 300)? 650 : accordSlideAnimDuration;
@@ -98,16 +98,15 @@ angular.module('mm.foundation.accordion', [])
             accordOuterContent.css('overflow','');
           });
         }
-        /*accordContent.slideToggle(function(){
-            jQuery(this).css('overflow','');
-        });*/
-      });
+      }
+
+      //accordAnchor.click(animate);
       var getIsOpen, setIsOpen;
 
       accordionCtrl.addGroup(scope);
 
       scope.isOpen = false;
-      
+
       if ( attrs.isOpen ) {
         getIsOpen = $parse(attrs.isOpen);
         setIsOpen = getIsOpen.assign;
@@ -130,6 +129,7 @@ angular.module('mm.foundation.accordion', [])
         if ( setIsOpen ) {
           setIsOpen(scope.$parent, value);
         }
+        animate();
       });
     }
   };
