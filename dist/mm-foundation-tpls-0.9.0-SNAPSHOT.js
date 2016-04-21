@@ -30,7 +30,7 @@ angular.module('mm.foundation.accordion', [])
       });
     }
   };
-  
+
   // This is called from the accordion-group directive to add itself to the accordion
   this.addGroup = function(groupScope) {
     var that = this;
@@ -86,7 +86,7 @@ angular.module('mm.foundation.accordion', [])
       var accordSlideAnimEasing = "easeInOutCubic";
       var accordSlideAnimDuration = 600;
 
-      accordAnchor.click(function(){
+      function animate() {
         if(!accordAnchor.hasClass('active')){
           accordContH = accordContent.outerHeight();
           accordSlideAnimDuration = (accordContH > 300)? 650 : accordSlideAnimDuration;
@@ -108,16 +108,15 @@ angular.module('mm.foundation.accordion', [])
             accordOuterContent.css('overflow','');
           });
         }
-        /*accordContent.slideToggle(function(){
-            jQuery(this).css('overflow','');
-        });*/
-      });
+      }
+
+      //accordAnchor.click(animate);
       var getIsOpen, setIsOpen;
 
       accordionCtrl.addGroup(scope);
 
       scope.isOpen = false;
-      
+
       if ( attrs.isOpen ) {
         getIsOpen = $parse(attrs.isOpen);
         setIsOpen = getIsOpen.assign;
@@ -140,6 +139,7 @@ angular.module('mm.foundation.accordion', [])
         if ( setIsOpen ) {
           setIsOpen(scope.$parent, value);
         }
+        animate();
       });
     }
   };
@@ -269,7 +269,7 @@ angular.module('mm.foundation.buttons', [])
       function getFalseValue() {
         return getCheckboxValue(attrs.btnCheckboxFalse, false);
       }
-      
+
       function getCheckboxValue(attributeValue, defaultValue) {
         var val = scope.$eval(attributeValue);
         return angular.isDefined(val) ? val : defaultValue;
@@ -480,7 +480,7 @@ angular.module('mm.foundation.dropdownToggle', [ 'mm.foundation.position', 'mm.f
         if (!elementWasOpen && !element.hasClass('disabled') && !element.prop('disabled')) {
           dropdown.css('display', 'block'); // We display the element so that offsetParent is populated
           dropdown.addClass('f-open-dropdown');
-          
+
           var offset = $position.offset(element);
           var parentOffset = $position.offset(angular.element(dropdown[0].offsetParent));
           var dropdownWidth = dropdown.prop('offsetWidth');
@@ -1704,7 +1704,7 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
 
   // The options specified to the provider globally.
   var globalOptions = {};
-  
+
   /**
    * `options({})` allows global configuration of all tooltips in the
    * application.
@@ -1773,7 +1773,7 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
 
       var startSym = $interpolate.startSymbol();
       var endSym = $interpolate.endSymbol();
-      var template = 
+      var template =
         '<div '+ directiveName +'-popup '+
           'title="'+startSym+'tt_title'+endSym+'" '+
           'content="'+startSym+'tt_content'+endSym+'" '+
@@ -1912,7 +1912,7 @@ angular.module( 'mm.foundation.tooltip', [ 'mm.foundation.position', 'mm.foundat
               // Set the initial positioning.
               tooltip.css({ top: 0, left: 0, display: 'block' });
 
-              // Now we add it to the DOM because need some info about it. But it's not 
+              // Now we add it to the DOM because need some info about it. But it's not
               // visible yet anyway.
               if ( appendToBody ) {
                   $document.find( 'body' ).append( tooltip );
@@ -2518,7 +2518,7 @@ angular.module('mm.foundation.tabs', [])
             return;
           }
           // Note this watcher also initializes and assigns scope.active to the
-          // attrs.active expression.          
+          // attrs.active expression.
           setActive(scope.$parent, active);
           if (active) {
             tabsetCtrl.select(scope);
