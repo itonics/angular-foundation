@@ -77,7 +77,7 @@ angular.module('mm.foundation.accordion', [])
       var accordSlideAnimDuration = 600;
 
       function animate() {
-        if(!accordAnchor.hasClass('active')){
+        if(scope.isOpen === false){
           accordContH = accordContent.outerHeight();
           accordSlideAnimDuration = (accordContH > 300)? 650 : accordSlideAnimDuration;
           accordSlideAnimDuration = (accordContH > 500)? 700 : accordSlideAnimDuration;
