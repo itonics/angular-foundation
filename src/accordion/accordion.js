@@ -75,6 +75,9 @@ angular.module('mm.foundation.accordion', [])
       var accordContH = accordContent.outerHeight();
       var accordSlideAnimEasing = "easeInOutCubic";
       var accordSlideAnimDuration = 600;
+      if(element.attr('no-animate')) {
+        accordSlideAnimDuration = 0;
+      }
 
       function animate() {
         if(scope.isOpen === false){
