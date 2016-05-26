@@ -68,77 +68,84 @@ angular.module('mm.foundation.accordion', [])
       };
     },
     link: function(scope, element, attrs, accordionCtrl) {
-      // Customized for LEB :: The jQuery toggleSlide animation // Replaced the default inline css display block/none
-      var accordContent = element.find('.content');
-      var accordOuterContent = element.find('.outer-content');
-      var accordAnchor = element.find('a:first');
-      var accordContH = accordContent.outerHeight();
-      var accordSlideAnimEasing = "easeInOutCubic";
-      var accordSlideAnimDuration = 600;
-      if(element.attr('no-animate')) {
-        accordSlideAnimDuration = 0;
-      }
-
-      function animate() {
-        if(scope.isOpen === false){
-          accordContH = accordContent.outerHeight();
-          accordSlideAnimDuration = (accordContH > 300)? 650 : accordSlideAnimDuration;
-          accordSlideAnimDuration = (accordContH > 500)? 700 : accordSlideAnimDuration;
-          accordSlideAnimDuration = (accordContH > 700)? 800 : accordSlideAnimDuration;
-          accordSlideAnimDuration = (accordContH > 1000)? 1000 : accordSlideAnimDuration;
-          accordSlideAnimDuration = (accordContH > 1500)? 1400 : accordSlideAnimDuration;
-
-          accordOuterContent.css('overflow','hidden');
-          accordContent.stop(true, false).animate({'margin-top':-accordContH}, accordSlideAnimDuration, accordSlideAnimEasing, function(){
-            accordOuterContent.hide();
-            accordOuterContent.css('overflow','');
-          });
-        }else{
-          accordOuterContent.show();
-          accordContent.css({'margin-top':-accordContent.outerHeight()});
-          accordOuterContent.css('overflow','hidden');
-          accordContent.stop(true, false).animate({'margin-top':0}, accordSlideAnimDuration, accordSlideAnimEasing, function(){
-            accordOuterContent.css('overflow','');
-          });
-        }
-      }
-
-      //accordAnchor.click(animate);
-      var getIsOpen, setIsOpen;
-
-      accordionCtrl.addGroup(scope);
-
-      scope.isOpen = false;
-
-      if ( attrs.isOpen ) {
-        getIsOpen = $parse(attrs.isOpen);
-        setIsOpen = getIsOpen.assign;
-        // Customized:: The closing(initial) needs to be done manually, since we are using jQuery toggleSlide animation
-        if(!getIsOpen()){
-          //timeout to wait all transition finished
-          setTimeout(function() {
-            animate();
-          }, 600);
-        }else{
-          setTimeout(function() {
-            animate();
-          }, 600);
+        // Customized for LEB :: The jQuery toggleSlide animation // Replaced the default inline css display block/none
+        var accordContent = element.find('.content');
+        var accordOuterContent = element.find('.outer-content');
+        var accordAnchor = element.find('a:first');
+        var accordContH = accordContent.outerHeight();
+        var accordSlideAnimEasing = "easeInOutCubic";
+        var accordSlideAnimDuration = 600;
+        if(element.attr('no-animate')) {
+          accordSlideAnimDuration = 0;
         }
 
-        scope.$parent.$watch(getIsOpen, function(value) {
-          scope.isOpen = (value === true || value === 'true');
+        // Do the animation only when the anchor is clicked, otherwise dont use any timing on the animation
+        accordAnchor.on("click", function() {
+            accordAnchor.attr("animate-cursor", "true");
+            animate(600);
         });
-      }
 
-      scope.$watch('isOpen', function(value) {
-        if ( value ) {
-          accordionCtrl.closeOthers(scope);
+        // add duration parameter to have dynamic duration during animate that can be called from the function
+        function animate(duration) {
+          if(!duration) {
+              duration = 0;
+              accordAnchor.attr("animate-cursor", "false");
+          }
+
+          if(scope.isOpen === false){
+            accordContH = accordContent.outerHeight();
+
+            accordOuterContent.css('overflow','hidden');
+            accordContent.stop(true, false).animate({'margin-top':-accordContH}, duration, accordSlideAnimEasing, function(){
+              accordOuterContent.hide();
+              accordOuterContent.css('overflow','');
+            });
+          }else{
+            accordOuterContent.show();
+            accordContent.css({'margin-top':-accordContent.outerHeight()});
+            accordOuterContent.css('overflow','hidden');
+            accordContent.stop(true, false).animate({'margin-top':0}, duration, accordSlideAnimEasing, function(){
+              accordOuterContent.css('overflow','');
+            });
+          }
         }
-        if ( setIsOpen ) {
-          setIsOpen(scope.$parent, value);
+
+        //accordAnchor.click(animate);
+        var getIsOpen, setIsOpen;
+
+        accordionCtrl.addGroup(scope);
+
+        scope.isOpen = false;
+
+        if ( attrs.isOpen ) {
+          getIsOpen = $parse(attrs.isOpen);
+          setIsOpen = getIsOpen.assign;
+          // Customized:: The closing(initial) needs to be done manually, since we are using jQuery toggleSlide animation
+          if(!getIsOpen()){
+            //timeout to wait all transition finished
+            setTimeout(function() {
+              animate();
+            }, 1);
+          }else{
+            setTimeout(function() {
+              animate();
+            }, 1);
+          }
+
+          scope.$parent.$watch(getIsOpen, function(value) {
+            scope.isOpen = (value === true || value === 'true');
+          });
         }
-        animate();
-      });
+
+      //   scope.$watch('isOpen', function(value) {
+      //     if ( value ) {
+      //       accordionCtrl.closeOthers(scope);
+      //     }
+      //     if ( setIsOpen ) {
+      //       setIsOpen(scope.$parent, value);
+      //     }
+      //     animate();
+      //   });
     }
   };
 }])
