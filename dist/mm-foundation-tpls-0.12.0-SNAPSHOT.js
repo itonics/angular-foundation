@@ -2,7 +2,7 @@
  * angular-mm-foundation
  * http://pineconellc.github.io/angular-foundation/
 
- * Version: 0.12.0-SNAPSHOT - 2016-05-26
+ * Version: 0.12.0-SNAPSHOT - 2016-08-02
  * License: MIT
  * (c) Pinecone, LLC
  */
@@ -143,7 +143,17 @@ angular.module('mm.foundation.accordion', [])
           }
 
           scope.$parent.$watch(getIsOpen, function(value) {
-            scope.isOpen = (value === true || value === 'true');
+            var isOpen = (value === true || value === 'true');
+            if(isOpen !== scope.isOpen) {
+              scope.isOpen = isOpen;
+              if ( scope.isOpen ) {
+                accordionCtrl.closeOthers(scope);
+              }
+              if ( setIsOpen ) {
+                setIsOpen(scope.$parent, value);
+              }
+              animate();
+            }
           });
         }
 

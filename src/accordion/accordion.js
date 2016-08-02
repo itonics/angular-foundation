@@ -133,7 +133,17 @@ angular.module('mm.foundation.accordion', [])
           }
 
           scope.$parent.$watch(getIsOpen, function(value) {
-            scope.isOpen = (value === true || value === 'true');
+            var isOpen = (value === true || value === 'true');
+            if(isOpen !== scope.isOpen) {
+              scope.isOpen = isOpen;
+              if ( scope.isOpen ) {
+                accordionCtrl.closeOthers(scope);
+              }
+              if ( setIsOpen ) {
+                setIsOpen(scope.$parent, value);
+              }
+              animate();
+            }
           });
         }
 
