@@ -82,22 +82,16 @@ angular.module('mm.foundation.dropdownToggle', [ 'mm.foundation.position', 'mm.f
           openElement = element;
 
           closeMenu = function (event) {
-            //close drop down only if dropdownpersist is in attribute and click event is outside the box area
-            if (typeof event !== "undefined" && (dropdown.find(event.target).length === 1 && ("dropdownpersist" in attrs))) {
-              event.stopPropagation();
-            } else {
-              $document.off('click', closeMenu);
-              dropdown.css('display', 'none');
-              dropdown.removeClass('f-open-dropdown');
-              element.removeClass('expanded');
-              closeMenu = angular.noop;
-              openElement = null;
-              if (parent.hasClass('hover')) {
-                parent.removeClass('hover');
-              }
+            $document.off('click', closeMenu);
+            dropdown.css('display', 'none');
+            dropdown.removeClass('f-open-dropdown');
+            element.removeClass('expanded');
+            closeMenu = angular.noop;
+            openElement = null;
+            if (parent.hasClass('hover')) {
+              parent.removeClass('hover');
             }
           };
-          
           $document.on('click', closeMenu);
         }
       };
