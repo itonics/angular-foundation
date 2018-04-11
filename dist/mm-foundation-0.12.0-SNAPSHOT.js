@@ -2,7 +2,7 @@
  * angular-mm-foundation
  * http://pineconellc.github.io/angular-foundation/
 
- * Version: 0.12.0-SNAPSHOT - 2016-08-02
+ * Version: 0.12.0-SNAPSHOT - 2018-04-11
  * License: MIT
  * (c) Pinecone, LLC
  */
@@ -540,14 +540,19 @@ angular.module('mm.foundation.dropdownToggle', [ 'mm.foundation.position', 'mm.f
           openElement = element;
 
           closeMenu = function (event) {
-            $document.off('click', closeMenu);
-            dropdown.css('display', 'none');
-            dropdown.removeClass('f-open-dropdown');
-            element.removeClass('expanded');
-            closeMenu = angular.noop;
-            openElement = null;
-            if (parent.hasClass('hover')) {
-              parent.removeClass('hover');
+            //hide dropdown only if it has class dropdownPersist class anf click event is outside the box
+            if (typeof event !== "undefined" && (dropdown.find(event.target).length === 1 && element.hasClass("dropdownPersist"))) {
+              event.stopPropagation();
+            } else {
+              $document.off('click', closeMenu);
+              dropdown.css('display', 'none');
+              dropdown.removeClass('f-open-dropdown');
+              element.removeClass('expanded');
+              closeMenu = angular.noop;
+              openElement = null;
+              if (parent.hasClass('hover')) {
+                parent.removeClass('hover');
+              }
             }
           };
           $document.on('click', closeMenu);
